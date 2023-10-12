@@ -69,23 +69,33 @@ export const Chat = () => {
 
 				<div className="chat-cont">
 					<span className="chat-hero">Prodoc.ai</span>
+					<div className="chat-suggestions">
+						<div className="chat-suggestion">
+							<span className="chat-suggestion-title">Reports</span>
+							<span>
+								Here are my medical reports, Whom should I consult with ?
+							</span>
+						</div>
+						<div className="chat-suggestion">
+							<span className="chat-suggestion-title">Alternatives</span>
+							<span>Looking for a second opinion, find me an alternative</span>
+						</div>
+						<div className="chat-suggestion">
+							<span className="chat-suggestion-title">Search</span>
+							<span>Find a hospital that has neonatal ICU</span>
+						</div>
+						<div className="chat-suggestion">
+							<span className="chat-suggestion-title">Suggestion</span>
+							<span>A good physiotherapist near me.</span>
+						</div>
+					</div>
 					<div className="chat-input">
 						<textarea type="text" placeholder="Send a message" />
 						<AiOutlineSend className="send-btn" size={25} />
 					</div>
 					<div className="msg-container">
-						{/* <UserMsg msg={"Suggest me a good neonatal hospital nearby"} />
-						<BotMsg
-							msg={
-								"Here is a list of good neanatal hospitals nearby asjdh asdj lask dlaks dlkasn dlka nsldkanskld nlaksn dlkasn lkdnalkns lkdnalksd nlkasn dlkanslkdn akls ndl"
-							}
-						/>
 						<UserMsg msg={"Suggest me a good neonatal hospital nearby"} />
 						<BotMsg msg={"Here is a list of good neanatal hospitals nearby"} />
-						<UserMsg msg={"Suggest me a good neonatal hospital nearby"} />
-						<BotMsg msg={"Here is a list of good neanatal hospitals nearby"} />
-						<UserMsg msg={"Suggest me a good neonatal hospital nearby"} />
-						<BotMsg msg={"Here is a list of good neanatal hospitals nearby"} /> */}
 					</div>
 				</div>
 			</div>
