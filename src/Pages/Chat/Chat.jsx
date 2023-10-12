@@ -1,15 +1,31 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import "./Chat.css";
 import { AiOutlineLayout, AiOutlinePlus } from "react-icons/ai";
 import { BiMessageSquare, BiRightTopArrowCircle } from "react-icons/bi";
 import { AiOutlineSend } from "react-icons/ai";
 import { UserMsg } from "./ChatMsg/UserMsg";
 import { BotMsg } from "./ChatMsg/BotMsg";
+import { LoadingMsg } from "./ChatMsg/LoadingMsg";
+import { PulseLoader } from "react-spinners";
+import { useNavigate } from "react-router-dom";
+import UserContext from "../../UserProvider";
 
 export const Chat = () => {
+	const { user } = useContext(UserContext);
 	const [sidenav, setSidenav] = useState(true);
 	const [isHidden, setIsHidden] = useState(false);
 	const [hidele, setHidele] = useState(false);
+	const [inputPrompt, setInputPrompt] = useState("");
+	const [msgHistory, setMsgHistory] = useState([]);
+	const [loading, setLoading] = useState(false);
+
+	const navigate = useNavigate();
+
+	useEffect(() => {
+		if (!localStorage.getItem("user-prodoc")) {
+			navigate("/");
+		}
+	}, []);
 
 	const hideElement = () => {
 		setIsHidden(true);
@@ -23,6 +39,28 @@ export const Chat = () => {
 		setIsHidden(false);
 		// setTimeout(() => {}, 350);
 	};
+
+	const sendPromt = () => {
+		hideElement();
+		setMsgHistory((oldArray) => [
+			...oldArray,
+			{ type: "user", message: inputPrompt }
+		]);
+		setLoading(true);
+		setTimeout(() => {
+			setMsgHistory((oldArray) => [
+				...oldArray,
+				{
+					type: "model",
+					message:
+						"Hi this is Prodoc.ai, I am here to assist you on all regards related to medical domain. I can also suggest various doctors related to the prompts."
+				}
+			]);
+			setLoading(false);
+			setInputPrompt("");
+		}, 3000);
+	};
+
 	return (
 		<div className="chat-page">
 			<div
@@ -62,11 +100,8 @@ export const Chat = () => {
 						<span> Upgrade to Pro</span>
 					</div>
 					<div className="side-nav-profile">
-						<img
-							src="https://chat.openai.com/_next/image?url=https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FACg8ocIVOhL9jtkBx0G_vCWCO50jLDoDLGjkkgr3qlB6FBtPJ9tA%3Ds96-c&w=64&q=75"
-							alt=""
-						/>
-						<span>Jeremy Asirwaad</span>
+						<img src={user?.photoUrl} alt="" />
+						<span>{user?.displayName}</span>
 					</div>
 				</div>
 			</div>
@@ -83,52 +118,95 @@ export const Chat = () => {
 				</div>
 
 				<div className="chat-cont">
-					{!hidele && (
-						<span className={`chat-hero ${isHidden ? "transition-hide" : ""}`}>
-							Prodoc.ai
-						</span>
-					)}
+					<span className={`chat-hero ${isHidden ? "transition-hero" : ""}`}>
+						Prodoc.ai
+					</span>
+
 					{!hidele && (
 						<div
 							className={`chat-suggestions  ${
 								isHidden ? "transition-hide" : ""
 							}`}
 						>
-							<div className="chat-suggestion">
+							<div
+								className="chat-suggestion"
+								onClick={() => {
+									setInputPrompt(
+										"Here are my medical reports, Whom should I consult with ?"
+									);
+								}}
+							>
 								<span className="chat-suggestion-title">Reports</span>
 								<span>
 									Here are my medical reports, Whom should I consult with ?
 								</span>
 							</div>
-							<div className="chat-suggestion">
+							<div
+								className="chat-suggestion"
+								onClick={() => {
+									setInputPrompt(
+										"Looking for an second opinion, find me an alternative"
+									);
+								}}
+							>
 								<span className="chat-suggestion-title">Alternatives</span>
 								<span>
-									Looking for a second opinion, find me an alternative
+									Looking for an second opinion, find me an alternative
 								</span>
 							</div>
-							<div className="chat-suggestion">
+							<div
+								className="chat-suggestion"
+								onClick={() => {
+									setInputPrompt("Find a hospital that has neonatal ICU");
+								}}
+							>
 								<span className="chat-suggestion-title">Search</span>
 								<span>Find a hospital that has neonatal ICU</span>
 							</div>
 							<div
 								className="chat-suggestion"
 								onClick={() => {
-									hideElement();
+									setInputPrompt("Suggest a good physiotherapist near me");
 								}}
 							>
 								<span className="chat-suggestion-title">Suggestion</span>
-								<span>A good physiotherapist near me.</span>
+								<span>Suggest a good physiotherapist near me</span>
 							</div>
 						</div>
 					)}
 
 					<div className="chat-input">
-						<textarea type="text" placeholder="Send a message" />
-						<AiOutlineSend className="send-btn" size={25} />
+						<textarea
+							type="text"
+							placeholder="Send a message"
+							value={inputPrompt}
+							onChange={(e) => {
+								setInputPrompt(e.target.value);
+							}}
+						/>
+						{loading ? (
+							<PulseLoader size={4} className="send-btn" />
+						) : (
+							<AiOutlineSend
+								className="send-btn"
+								size={25}
+								onClick={() => {
+									sendPromt();
+								}}
+							/>
+						)}
 					</div>
 					<div className="msg-container">
-						<UserMsg msg={"Suggest me a good neonatal hospital nearby"} />
-						<BotMsg msg={"Here is a list of good neanatal hospitals nearby"} />
+						{msgHistory.map((msg) => {
+							if (msg.type === "user") {
+								return <UserMsg msg={msg.message} src={user?.photoUrl} />;
+							} else {
+								return <BotMsg msg={msg.message} />;
+							}
+						})}
+						{loading && <LoadingMsg />}
+						{/* <UserMsg msg={"Suggest me a good neonatal hospital nearby"} />
+						<BotMsg msg={"Here is a list of good neanatal hospitals nearby"} /> */}
 					</div>
 				</div>
 			</div>

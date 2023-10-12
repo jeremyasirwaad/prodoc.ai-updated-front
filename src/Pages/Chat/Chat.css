@@ -99,10 +99,6 @@
 
 }
 
-.chat-component > span, .chat-component > svg{
-    /* background-color: rgb(22, 86, 74); */
-    
-}
 
 .side-bar-profile-section{
     position: absolute;
@@ -265,7 +261,13 @@
 }
 
 .transition-hide{
+    /* font-size: 30px; */
     opacity: 0 !important;
+}
+
+.transition-hero{
+    font-size: 30px;
+
 }
 
 .msg-container{

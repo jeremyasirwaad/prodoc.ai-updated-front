@@ -28,3 +28,18 @@
     margin-right: 20px;
     border-radius: 10px;
 }
+
+.bot-msg-loading{
+    width: 700px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    margin-top: 60px;
+}
+
+.bot-msg-loading > img{
+    width: 40px;
+    margin-right: 20px;
+    border-radius: 10px;
+}

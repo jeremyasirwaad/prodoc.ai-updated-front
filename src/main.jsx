@@ -12,36 +12,39 @@ import {
 import { Navbar } from "./common/Navbav/Navbar.jsx";
 import { Login } from "./Pages/Login/Login.jsx";
 import { Chat } from "./Pages/Chat/Chat.jsx";
+import { UserProvider } from "./UserProvider.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
 	<React.StrictMode>
-		<BrowserRouter>
-			<Routes>
-				<Route
-					path="/"
-					element={
-						<>
-							<App />
-						</>
-					}
-				/>
-				<Route
-					path="/login"
-					element={
-						<>
-							<Login />
-						</>
-					}
-				/>
-				<Route
-					path="/chat"
-					element={
-						<>
-							<Chat />
-						</>
-					}
-				/>
-			</Routes>
-		</BrowserRouter>
+		<UserProvider>
+			<BrowserRouter>
+				<Routes>
+					<Route
+						path="/"
+						element={
+							<>
+								<App />
+							</>
+						}
+					/>
+					<Route
+						path="/login"
+						element={
+							<>
+								<Login />
+							</>
+						}
+					/>
+					<Route
+						path="/chat"
+						element={
+							<>
+								<Chat />
+							</>
+						}
+					/>
+				</Routes>
+			</BrowserRouter>
+		</UserProvider>
 	</React.StrictMode>
 );
