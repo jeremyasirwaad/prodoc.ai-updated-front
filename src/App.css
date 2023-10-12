@@ -1,0 +1,175 @@
+.landing-page{
+  width: 100%;
+  display: flex;
+  height: 100vh;
+  min-height: 600px;
+}
+
+.landing-sec1{
+  width: 50%;
+  background-color: white;
+  height: 100%
+}
+
+
+.landing-sec2
+{
+  width: 100%;
+  background-color: rgb(23,113,210);
+  height: 100%;
+  position: relative;
+
+}
+
+.sec1-contents{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 120px;
+  height: calc(100vh - 250px);
+  min-height: 500px;
+}
+
+.land-title{
+
+}
+
+.land-title{
+  font-weight: 600;
+  font-size: 55px;
+  /* margin-bottom: px; */
+  color:rgb(23,113,210) ;
+}
+
+.land-subtitle{
+  font-weight: 500;
+  margin-bottom: 40px;
+  
+}
+
+.land-subpara{
+  margin-bottom:50px;
+}
+
+.land-subbutton{
+  background-color: rgb(23,113,210);
+  width: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  cursor: pointer;
+  border-radius: 40px;
+  padding: 10px;
+}
+
+.sec2-contents{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 250px);
+  background-color: rgb(23,113,210);
+  min-height: 500px;
+
+}
+
+
+.sec2-imagecontainer {
+  border-radius: 40px;
+  position: relative;
+  width: 60%;
+  height: 80%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color:rgb(23,113,210) ;
+}
+
+.sec2-imagecontainer > img {
+  width: 100%;
+  height: 100%;
+  border-radius: 40px;
+  object-fit: cover;
+  box-sizing: border-box; /* Add this property */
+  padding: 5px;
+}
+
+.sec2-imagetext{
+  width: 100px;
+  /* height: 100px; */
+  background-color: white;
+  z-index: 100;
+  position: absolute;
+  bottom: -30px;
+  left: 30%;
+  width: 400px;
+  border-radius: 40px;
+  padding: 20px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  display: flex;
+  color: black;
+  align-items: center;
+  transition: all 10s ease-in-out;
+}
+
+.term-privacy{
+  position: absolute;
+  bottom: 13px;
+  right: 50%;
+  transform: translateX(50%);
+  background-color: rgb(23,113,210);
+  color: white;
+}
+
+
+.image-rotator {
+  position: relative;
+}
+
+.image0 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transition: all 0.5s ease-out;
+  width: 90%;
+  height: 90%;
+}
+
+.image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transition: all 0.5s ease-out;
+  width: 90%;
+  height: 90%;
+}
+
+
+
+.image.active0{
+  opacity: 1;
+  width: 100%;
+  height: 100%;
+}
+
+.image.active1{
+  opacity: 1;
+  width: 90%;
+  height: 90%;
+}
+
+.image.active2{
+  opacity: 1;
+  width: 100%;
+  height: 100%;
+}
+
+.image.active3{
+  opacity: 1;
+  width: 85%;
+  height: 85%;
+}
+
