@@ -8,6 +8,21 @@ import { BotMsg } from "./ChatMsg/BotMsg";
 
 export const Chat = () => {
 	const [sidenav, setSidenav] = useState(true);
+	const [isHidden, setIsHidden] = useState(false);
+	const [hidele, setHidele] = useState(false);
+
+	const hideElement = () => {
+		setIsHidden(true);
+		setTimeout(() => {
+			setHidele(true);
+		}, 350);
+	};
+
+	const emergeElement = () => {
+		setHidele(false);
+		setIsHidden(false);
+		// setTimeout(() => {}, 350);
+	};
 	return (
 		<div className="chat-page">
 			<div
@@ -68,27 +83,45 @@ export const Chat = () => {
 				</div>
 
 				<div className="chat-cont">
-					<span className="chat-hero">Prodoc.ai</span>
-					<div className="chat-suggestions">
-						<div className="chat-suggestion">
-							<span className="chat-suggestion-title">Reports</span>
-							<span>
-								Here are my medical reports, Whom should I consult with ?
-							</span>
+					{!hidele && (
+						<span className={`chat-hero ${isHidden ? "transition-hide" : ""}`}>
+							Prodoc.ai
+						</span>
+					)}
+					{!hidele && (
+						<div
+							className={`chat-suggestions  ${
+								isHidden ? "transition-hide" : ""
+							}`}
+						>
+							<div className="chat-suggestion">
+								<span className="chat-suggestion-title">Reports</span>
+								<span>
+									Here are my medical reports, Whom should I consult with ?
+								</span>
+							</div>
+							<div className="chat-suggestion">
+								<span className="chat-suggestion-title">Alternatives</span>
+								<span>
+									Looking for a second opinion, find me an alternative
+								</span>
+							</div>
+							<div className="chat-suggestion">
+								<span className="chat-suggestion-title">Search</span>
+								<span>Find a hospital that has neonatal ICU</span>
+							</div>
+							<div
+								className="chat-suggestion"
+								onClick={() => {
+									hideElement();
+								}}
+							>
+								<span className="chat-suggestion-title">Suggestion</span>
+								<span>A good physiotherapist near me.</span>
+							</div>
 						</div>
-						<div className="chat-suggestion">
-							<span className="chat-suggestion-title">Alternatives</span>
-							<span>Looking for a second opinion, find me an alternative</span>
-						</div>
-						<div className="chat-suggestion">
-							<span className="chat-suggestion-title">Search</span>
-							<span>Find a hospital that has neonatal ICU</span>
-						</div>
-						<div className="chat-suggestion">
-							<span className="chat-suggestion-title">Suggestion</span>
-							<span>A good physiotherapist near me.</span>
-						</div>
-					</div>
+					)}
+
 					<div className="chat-input">
 						<textarea type="text" placeholder="Send a message" />
 						<AiOutlineSend className="send-btn" size={25} />
