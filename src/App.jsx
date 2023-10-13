@@ -16,12 +16,6 @@ function App() {
 	const timeIntervals = [6900, 5300, 5700, 6000];
 
 	useEffect(() => {
-		if (localStorage.getItem("user-prodoc")) {
-			navigate("/chat");
-		}
-	});
-
-	useEffect(() => {
 		const intervalId = setInterval(() => {
 			setCurrentImageIndex((prevIndex) => (prevIndex + 1) % imageUrls.length);
 		}, timeIntervals[currentImageIndex]);
