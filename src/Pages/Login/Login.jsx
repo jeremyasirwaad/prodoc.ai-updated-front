@@ -10,15 +10,14 @@ import { auth, jwt_key } from "../../config-firebase";
 import { FacebookAuthProvider, GoogleAuthProvider } from "firebase/auth";
 import { signInWithPopup } from "firebase/auth";
 import UserContext from "../../UserProvider";
-// import { Buffer } from "buffer";
-// globalThis.Buffer = Buffer;
+import { url } from "../../../networl.config";
 
 export const Login = () => {
 	const { setUser } = useContext(UserContext);
 	const signInGoogle = () => {
 		const provider = new GoogleAuthProvider();
 		signInWithPopup(auth, provider)
-			.then((data) => {
+			.then(async (data) => {
 				console.log(data.user);
 				const expiresIn = "7d";
 				const user = {
@@ -32,7 +31,22 @@ export const Login = () => {
 				console.log(token);
 				localStorage.setItem("user-prodoc", token);
 				setUser(user);
-				navigate("/chat");
+				try {
+					const response = await fetch(`${url}users`, {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json"
+						},
+						body: JSON.stringify(user)
+					});
+
+					if (response.status === 200) {
+						navigate("/chat");
+					}
+				} catch (error) {
+					setResponse("Error creating user");
+					console.error(error);
+				}
 			})
 			.catch((err) => {
 				console.log(err);

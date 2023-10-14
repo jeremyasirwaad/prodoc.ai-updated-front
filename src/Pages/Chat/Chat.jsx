@@ -9,6 +9,7 @@ import { LoadingMsg } from "./ChatMsg/LoadingMsg";
 import { PulseLoader } from "react-spinners";
 import { useNavigate } from "react-router-dom";
 import UserContext from "../../UserProvider";
+import { v4 as uuidv4 } from "uuid";
 
 export const Chat = () => {
 	const { user } = useContext(UserContext);
@@ -18,10 +19,11 @@ export const Chat = () => {
 	const [inputPrompt, setInputPrompt] = useState("");
 	const [msgHistory, setMsgHistory] = useState([]);
 	const [loading, setLoading] = useState(false);
-
+	const [contextId, setcontextId] = useState("");
 	const navigate = useNavigate();
 
 	useEffect(() => {
+		setcontextId(uuidv4());
 		if (!localStorage.getItem("user-prodoc")) {
 			navigate("/");
 		}
