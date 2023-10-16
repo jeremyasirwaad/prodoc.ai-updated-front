@@ -1,0 +1,52 @@
+.Otppage
+{
+
+}
+
+.mobile_verify_container{
+    margin-top: 100px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.mobile_verifiy_title{
+    font-weight: 600;
+    font-size: 28px;
+    margin-bottom: 45px;
+    color: rgb(43, 43, 43);
+}
+
+.get_otp_btn{
+    margin-top: 45px;
+    width: 100%;
+    outline: none;
+    border: none;
+    padding: 10px;
+    color: white;
+    background-color: rgb(23,113,210);
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.react-tel-input {
+    height: 40px;
+
+}
+
+.react-tel-input .form-control
+{
+    height: 40px !important;
+    
+}
+
+.otpinput > input{
+    width: 35px !important; 
+    height: 35px !important; 
+}
+
+div.otpinput > input:nth-child(6) {
+    margin-right: 0px !important;
+}
+

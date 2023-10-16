@@ -13,6 +13,8 @@ import { Navbar } from "./common/Navbav/Navbar.jsx";
 import { Login } from "./Pages/Login/Login.jsx";
 import { Chat } from "./Pages/Chat/Chat.jsx";
 import { UserProvider } from "./UserProvider.jsx";
+import { Declaration } from "./Pages/Declaration/Declaration.jsx";
+import { Otp } from "./Pages/Otp/Otp.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
 	<React.StrictMode>
@@ -40,6 +42,22 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 						element={
 							<>
 								<Chat />
+							</>
+						}
+					/>
+					<Route
+						path="/declaration"
+						element={
+							<>
+								<Declaration />
+							</>
+						}
+					/>
+					<Route
+						path="/otp"
+						element={
+							<>
+								<Otp />
 							</>
 						}
 					/>

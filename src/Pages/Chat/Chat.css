@@ -76,14 +76,22 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    margin: 10px;
+    /* margin: 10px; */
     flex-direction: column;
     margin-top: 30px;
-    /* background-color: rgb(22, 86, 74); */
+    height: calc(100% - 220px);
+    overflow-y: scroll;
+}
+
+.chat-history{
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none;  /* Firefox */
+}
+.chat-history::-webkit-scrollbar { 
+    display: none;  /* Safari and Chrome */
 }
 
 .chat-component{
-    /* background-color: rgb(22, 86, 74); */
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -102,7 +110,7 @@
 
 .side-bar-profile-section{
     position: absolute;
-    bottom: 20px;
+    bottom: 0px;
     display: flex;
     left: 0px;
     align-items: flex-start;
@@ -110,12 +118,17 @@
     width: 100%;
     flex-direction: column;
     padding: 15px;
+    /* background-color: rgb(200, 218, 215); */
+    z-index: 10;
+    height: 155px;
 }
 
 .chat-history-title{
     margin-left: 10px;
     color: white;
     font-weight: 200;
+   font-size: 15px;
+   /* background: linear-gradient(to right, transparent 0%, #fff 100%); */
 }
 
 .profile-divider{
@@ -229,12 +242,15 @@
     position: fixed;
     bottom: 30px;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    align-items: center;
+    width: 750px;
+
 }
 
 .chat-input > textarea{
     resize: none;
-    width: 750px;
+    width: 100%;
     padding: 10px;
     padding-right: 50px;
     height: 45px;
@@ -319,4 +335,15 @@
 .chat-suggestion-title
 {
     font-weight: 500;
+}
+
+
+.file_upload{
+    width: 30px;
+    height: 100%;
+    border: 1px solid black;
+    padding: 10px;
+    margin-right: 5px;
+    border-radius: 10px;
+    cursor: pointer;
 }

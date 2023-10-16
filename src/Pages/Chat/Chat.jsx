@@ -10,6 +10,8 @@ import { PulseLoader } from "react-spinners";
 import { useNavigate } from "react-router-dom";
 import UserContext from "../../UserProvider";
 import { v4 as uuidv4 } from "uuid";
+import { url } from "../../../networl.config";
+import { GrAttachment } from "react-icons/gr";
 
 export const Chat = () => {
 	const { user } = useContext(UserContext);
@@ -19,15 +21,17 @@ export const Chat = () => {
 	const [inputPrompt, setInputPrompt] = useState("");
 	const [msgHistory, setMsgHistory] = useState([]);
 	const [loading, setLoading] = useState(false);
-	const [contextId, setcontextId] = useState("");
+	const [contextId, setcontextId] = useState(uuidv4());
+	const [sidebarhistory, setSidebarhistory] = useState([]);
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		setcontextId(uuidv4());
 		if (!localStorage.getItem("user-prodoc")) {
 			navigate("/");
+		} else {
+			getHistory();
 		}
-	}, []);
+	}, [user]);
 
 	const hideElement = () => {
 		setIsHidden(true);
@@ -42,12 +46,13 @@ export const Chat = () => {
 		// setTimeout(() => {}, 350);
 	};
 
-	const sendPromt = () => {
+	const sendPromt = async () => {
 		hideElement();
 		setMsgHistory((oldArray) => [
 			...oldArray,
 			{ type: "user", message: inputPrompt }
 		]);
+
 		setLoading(true);
 		setTimeout(() => {
 			setMsgHistory((oldArray) => [
@@ -59,8 +64,69 @@ export const Chat = () => {
 				}
 			]);
 			setLoading(false);
+			pushHistoryDB([
+				{ type: "user", message: inputPrompt },
+				{
+					type: "model",
+					message:
+						"Hi this is Prodoc.ai, I am here to assist you on all regards related to medical domain. I can also suggest various doctors related to the prompts."
+				}
+			]);
 			setInputPrompt("");
 		}, 3000);
+	};
+
+	const pushHistoryDB = async (chatArray) => {
+		try {
+			const response = await fetch(`${url}addHistory`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify({
+					uid: user.uid,
+					chat_id: contextId,
+					chats: chatArray
+				})
+			});
+		} catch (error) {
+			console.error(error);
+		}
+	};
+
+	const getHistory = async () => {
+		try {
+			const response = await fetch(`${url}getHistory`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify({
+					uid: user?.uid
+				})
+			})
+				.then((res) => res.json())
+				.then((data) => {
+					setSidebarhistory(data.data[0].history);
+				});
+		} catch (error) {
+			console.error(error);
+		}
+	};
+
+	const onhandleSideClicks = (side_nav) => {
+		const filtered_history = sidebarhistory.filter(
+			(data) => data.chat_id == side_nav.chat_id
+		);
+		console.log(filtered_history[0].chats);
+		hideElement();
+		setMsgHistory(filtered_history[0].chats);
+		// console.log(side_nav);
+	};
+
+	const newChat = () => {
+		setcontextId(uuidv4());
+		emergeElement();
 	};
 
 	return (
@@ -69,7 +135,13 @@ export const Chat = () => {
 				className={sidenav ? "chat-sidebar" : "chat-sidebar side-bar-closed"}
 			>
 				<div className="chat-sidebar-options ">
-					<button className="new-chat-btn">
+					<button
+						className="new-chat-btn"
+						onClick={() => {
+							setMsgHistory([]);
+							newChat();
+						}}
+					>
 						<AiOutlinePlus style={{ marginRight: "5px" }} /> New Chat
 					</button>
 					<button
@@ -82,18 +154,21 @@ export const Chat = () => {
 					</button>
 				</div>
 				<div className="chat-history">
-					<div className="chat-component">
-						<BiMessageSquare size={19} color="white" />
-						<span className="chat-history-title">How is Medical ?</span>
-					</div>
-					<div className="chat-component">
-						<BiMessageSquare size={19} color="white" />
-						<span className="chat-history-title">How is Medical ?</span>
-					</div>
-					<div className="chat-component">
-						<BiMessageSquare size={19} color="white" />
-						<span className="chat-history-title">How is Medical ?</span>
-					</div>
+					{sidebarhistory.map((data) => {
+						return (
+							<div
+								className="chat-component"
+								onClick={() => {
+									onhandleSideClicks(data);
+								}}
+							>
+								<BiMessageSquare size={19} color="white" />
+								<span className="chat-history-title">
+									{data.chats[0].message.slice(0, 17)}
+								</span>
+							</div>
+						);
+					})}
 				</div>
 				<div className="side-bar-profile-section">
 					<div className="profile-divider"></div>
@@ -178,6 +253,12 @@ export const Chat = () => {
 					)}
 
 					<div className="chat-input">
+						<div>
+							<label for="fileupload" className="file_upload">
+								<GrAttachment />
+							</label>
+							<input type="file" id="fileupload" style={{ display: "none" }} />
+						</div>
 						<textarea
 							type="text"
 							placeholder="Send a message"

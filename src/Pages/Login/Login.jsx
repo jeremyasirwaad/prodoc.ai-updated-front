@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import logo from "../../assets/prodoc.png";
 import facebook_logo from "../../assets/facebook.png";
 import google_logo from "../../assets/google.png";
@@ -11,10 +11,13 @@ import { FacebookAuthProvider, GoogleAuthProvider } from "firebase/auth";
 import { signInWithPopup } from "firebase/auth";
 import UserContext from "../../UserProvider";
 import { url } from "../../../networl.config";
+import PulseLoader from "react-spinners/PulseLoader";
 
 export const Login = () => {
+	const [loginClick, setLoginClick] = useState(false);
 	const { setUser } = useContext(UserContext);
 	const signInGoogle = () => {
+		setLoginClick(true);
 		const provider = new GoogleAuthProvider();
 		signInWithPopup(auth, provider)
 			.then(async (data) => {
@@ -38,11 +41,17 @@ export const Login = () => {
 							"Content-Type": "application/json"
 						},
 						body: JSON.stringify(user)
-					});
-
-					if (response.status === 200) {
-						navigate("/chat");
-					}
+					})
+						.then((res) => res.json())
+						.then((data) => {
+							if (data.mob_otp_flag == false) {
+								navigate("/otp");
+							} else if (data.declar_flag == false) {
+								navigate("/declaration");
+							} else {
+								navigate("/chat");
+							}
+						});
 				} catch (error) {
 					setResponse("Error creating user");
 					console.error(error);
@@ -76,10 +85,14 @@ export const Login = () => {
 				<button
 					onClick={() => {
 						signInGoogle();
-						// navigate("/chat");
 					}}
 				>
-					<img src={google_logo} alt="" /> Continue with Google
+					<img src={google_logo} alt="" />{" "}
+					{loginClick ? (
+						<PulseLoader size={7} style={{ marginLeft: "15px" }} />
+					) : (
+						"Continue with Google"
+					)}
 				</button>
 				<button>
 					<img src={facebook_logo} alt="" /> Continue with Facebook

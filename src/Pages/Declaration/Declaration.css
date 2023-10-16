@@ -1,0 +1,72 @@
+.privacy_policy_container{
+    width: 700px;
+    align-content: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.privacy_policy_title{
+    font-weight: 600;
+    font-size: 28px;
+    color: rgb(43, 43, 43);
+    text-align: center;
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+.privay_bold{
+    font-weight: 500;
+}
+
+.privacy_policy_container > p{
+    margin-bottom: 40px;
+}
+
+.privacy_mb_15{
+    margin-bottom: 15px;
+    margin-top: 25px;
+    font-weight: 500;
+}
+
+.privacy_mb_30{
+    margin-bottom: 20px;
+}
+
+.privacy_mb_15_no_bold{
+    margin-bottom: 15px;
+    margin-top: 25px;
+
+}
+
+.privacy_checkbox{
+    margin-top: 45px;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 45px;
+}
+
+.privacy_checkbox > input{
+    margin-right: 10px;
+}
+
+.privacy_checkbox > span{
+    font-weight: 500;
+}
+
+.accept_btn_cont{
+    margin-bottom: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.accept_btn_cont > button{
+    padding: 10px 20px;
+    border-radius: 20px;
+    outline: none;
+    border: none;
+    background-color: rgb(23,113,210);
+    color: white;
+
+}
