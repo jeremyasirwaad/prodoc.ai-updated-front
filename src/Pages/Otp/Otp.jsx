@@ -24,7 +24,7 @@ export const Otp = () => {
 			return;
 		}
 		try {
-			const response = await fetch(`${url}generate-otp`, {
+			const response = await fetch(`${url}generateOtp`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json"
@@ -51,7 +51,7 @@ export const Otp = () => {
 			return;
 		}
 		try {
-			const response = await fetch(`${url}verify-otp`, {
+			const response = await fetch(`${url}verifyOtp`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json"
