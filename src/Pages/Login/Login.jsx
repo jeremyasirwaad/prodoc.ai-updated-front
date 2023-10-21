@@ -53,7 +53,7 @@ export const Login = () => {
 							}
 						});
 				} catch (error) {
-					setResponse("Error creating user");
+					// setResponse("Error creating user");
 					console.error(error);
 				}
 			})
