@@ -103,6 +103,17 @@ export const Chat = () => {
 		updateScroll();
 	}, [msgHistory]);
 
+	// const handleEnterKeyPress = (event) => {
+	// 	if (event.key === "Enter") {
+	// 		sendPromt();
+	// 	}
+	// };
+
+	// useEffect(() => {
+	// 	// Attach event listener when the component mounts
+	// 	document.addEventListener("keydown", handleEnterKeyPress);
+	// }, []);
+
 	function updateScroll() {
 		var element = document.getElementById("msg-cont");
 		element.scroll({
@@ -218,7 +229,7 @@ export const Chat = () => {
 					</button>
 				</div>
 				<div className="chat-history">
-					{sidebarhistory.reverse().map((data) => {
+					{sidebarhistory.slice(0, 10).map((data) => {
 						return (
 							<div
 								className="chat-component"
