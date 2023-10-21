@@ -12,6 +12,8 @@ import UserContext from "../../UserProvider";
 import { v4 as uuidv4 } from "uuid";
 import { model_url, url } from "../../../networl.config";
 import { GrAttachment } from "react-icons/gr";
+import { FiLogOut } from "react-icons/fi";
+import toast, { Toaster } from "react-hot-toast";
 
 export const Chat = () => {
 	const msgContainerRef = useRef(null);
@@ -24,6 +26,7 @@ export const Chat = () => {
 	const [loading, setLoading] = useState(false);
 	const [contextId, setcontextId] = useState(uuidv4());
 	const [sidebarhistory, setSidebarhistory] = useState([]);
+	const [modelReply, setModelReply] = useState("");
 	const [file, setFile] = useState(null);
 	const [selectedFileName, setSelectedFileName] = useState("");
 	const navigate = useNavigate();
@@ -78,6 +81,7 @@ export const Chat = () => {
 							doc: data.message.doctors
 						}
 					]);
+					setModelReply(data.message.reply);
 					setLoading(false);
 
 					pushHistoryDB([
@@ -190,6 +194,7 @@ export const Chat = () => {
 
 	return (
 		<div className="chat-page">
+			<Toaster position="top-right" reverseOrder={false} />
 			<div
 				className={sidenav ? "chat-sidebar" : "chat-sidebar side-bar-closed"}
 			>
@@ -238,6 +243,14 @@ export const Chat = () => {
 					<div className="side-nav-profile">
 						<img src={user?.photoUrl} alt="" />
 						<span>{user?.displayName}</span>
+						<FiLogOut
+							className="logout-btn"
+							fontSize={41}
+							onClick={() => {
+								localStorage.removeItem("user-prodoc");
+								navigate("/");
+							}}
+						/>
 					</div>
 				</div>
 			</div>
@@ -369,9 +382,21 @@ export const Chat = () => {
 								return <UserMsg msg={msg.message} src={user?.photoUrl} />;
 							} else {
 								if (msg.doc != null || msg.doc != undefined) {
-									return <BotMsg msg={msg.message} doc={msg.doc} />;
+									return (
+										<BotMsg
+											msg={msg.message}
+											doc={msg.doc}
+											modelReply={modelReply}
+										/>
+									);
 								} else {
-									return <BotMsg msg={msg.message} doc={[]} />;
+									return (
+										<BotMsg
+											msg={msg.message}
+											doc={[]}
+											modelReply={modelReply}
+										/>
+									);
 								}
 							}
 						})}

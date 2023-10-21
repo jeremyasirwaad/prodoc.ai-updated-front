@@ -120,7 +120,7 @@
     padding: 15px;
     /* background-color: rgb(200, 218, 215); */
     z-index: 10;
-    height: 155px;
+    height: 165px;
 }
 
 .chat-history-title{
@@ -168,8 +168,7 @@
     align-items: center;
     justify-content: flex-start;
     color: white;
-
-
+    align-items: center;
     font-weight: 300;
 }
 
@@ -179,6 +178,20 @@
     margin-right: 10px;
 }
 
+.side-nav-profile > span{
+    margin-right: 13px;
+}
+
+.logout-btn{
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+}
+
+.logout-btn:hover{
+    background-color: rgb(26, 103, 89);
+
+}
 
 
 
