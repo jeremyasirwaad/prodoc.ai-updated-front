@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import "./Chat.css";
 import { AiOutlineLayout, AiOutlinePlus } from "react-icons/ai";
 import { BiMessageSquare, BiRightTopArrowCircle } from "react-icons/bi";
@@ -10,10 +10,11 @@ import { PulseLoader } from "react-spinners";
 import { useNavigate } from "react-router-dom";
 import UserContext from "../../UserProvider";
 import { v4 as uuidv4 } from "uuid";
-import { url } from "../../../networl.config";
+import { model_url, url } from "../../../networl.config";
 import { GrAttachment } from "react-icons/gr";
 
 export const Chat = () => {
+	const msgContainerRef = useRef(null);
 	const { user } = useContext(UserContext);
 	const [sidenav, setSidenav] = useState(true);
 	const [isHidden, setIsHidden] = useState(false);
@@ -23,6 +24,8 @@ export const Chat = () => {
 	const [loading, setLoading] = useState(false);
 	const [contextId, setcontextId] = useState(uuidv4());
 	const [sidebarhistory, setSidebarhistory] = useState([]);
+	const [file, setFile] = useState(null);
+	const [selectedFileName, setSelectedFileName] = useState("");
 	const navigate = useNavigate();
 
 	useEffect(() => {
@@ -46,35 +49,63 @@ export const Chat = () => {
 		// setTimeout(() => {}, 350);
 	};
 
+	const prompt = "";
+
 	const sendPromt = async () => {
 		hideElement();
 		setMsgHistory((oldArray) => [
 			...oldArray,
 			{ type: "user", message: inputPrompt }
 		]);
-
 		setLoading(true);
-		setTimeout(() => {
-			setMsgHistory((oldArray) => [
-				...oldArray,
-				{
-					type: "model",
-					message:
-						"Hi this is Prodoc.ai, I am here to assist you on all regards related to medical domain. I can also suggest various doctors related to the prompts."
-				}
-			]);
-			setLoading(false);
-			pushHistoryDB([
-				{ type: "user", message: inputPrompt },
-				{
-					type: "model",
-					message:
-						"Hi this is Prodoc.ai, I am here to assist you on all regards related to medical domain. I can also suggest various doctors related to the prompts."
-				}
-			]);
-			setInputPrompt("");
-		}, 3000);
+		try {
+			const response = await fetch(model_url, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify({
+					context: inputPrompt
+				})
+			})
+				.then((res) => res.json())
+				.then((data) => {
+					setMsgHistory((oldArray) => [
+						...oldArray,
+						{
+							type: "model",
+							message: data.message.reply,
+							doc: data.message.doctors
+						}
+					]);
+					setLoading(false);
+
+					pushHistoryDB([
+						{ type: "user", message: inputPrompt },
+						{
+							type: "model",
+							message: data.message.reply,
+							doc: data.message.doctors
+						}
+					]);
+					setInputPrompt("");
+				});
+		} catch (error) {
+			console.error(error);
+		}
 	};
+
+	useEffect(() => {
+		updateScroll();
+	}, [msgHistory]);
+
+	function updateScroll() {
+		var element = document.getElementById("msg-cont");
+		element.scroll({
+			top: element.scrollHeight,
+			behavior: "smooth"
+		});
+	}
 
 	const pushHistoryDB = async (chatArray) => {
 		try {
@@ -129,6 +160,34 @@ export const Chat = () => {
 		emergeElement();
 	};
 
+	const pdf_file_extract = (acceptedFiles) => {
+		const file = acceptedFiles;
+		setSelectedFileName(file.name);
+
+		const reader = new FileReader();
+
+		reader.onload = async () => {
+			const pdfData = new Uint8Array(reader.result);
+
+			// Load the PDF using pdf.js
+			const pdf = await pdfjs.getDocument({ data: pdfData }).promise;
+
+			// Extract text from each page
+			let textContent = "";
+			for (let i = 1; i <= pdf.numPages; i++) {
+				const page = await pdf.getPage(i);
+				const pageText = await page.getTextContent();
+				textContent += pageText.items.map((item) => item.str).join(" ");
+			}
+
+			setPdfText(textContent);
+			setNumPages(pdf.numPages);
+			HandleSubmit(textContent);
+		};
+
+		reader.readAsArrayBuffer(file);
+	};
+
 	return (
 		<div className="chat-page">
 			<div
@@ -154,7 +213,7 @@ export const Chat = () => {
 					</button>
 				</div>
 				<div className="chat-history">
-					{sidebarhistory.map((data) => {
+					{sidebarhistory.reverse().map((data) => {
 						return (
 							<div
 								className="chat-component"
@@ -195,7 +254,10 @@ export const Chat = () => {
 				</div>
 
 				<div className="chat-cont">
-					<span className={`chat-hero ${isHidden ? "transition-hero" : ""}`}>
+					<span
+						className={`chat-hero ${isHidden ? "transition-hero" : ""}`}
+						onClick={updateScroll}
+					>
 						Prodoc.ai
 					</span>
 
@@ -257,7 +319,16 @@ export const Chat = () => {
 							<label for="fileupload" className="file_upload">
 								<GrAttachment />
 							</label>
-							<input type="file" id="fileupload" style={{ display: "none" }} />
+							<input
+								type="file"
+								id="fileupload"
+								accept=".pdf"
+								style={{ display: "none" }}
+								onChange={(e) => {
+									const selectedFile = e.target.files[0];
+									setFile(selectedFile);
+								}}
+							/>
 						</div>
 						<textarea
 							type="text"
@@ -279,12 +350,29 @@ export const Chat = () => {
 							/>
 						)}
 					</div>
-					<div className="msg-container">
+					<div className="msg-container" id="msg-cont" ref={msgContainerRef}>
 						{msgHistory.map((msg) => {
+							var doc = [
+								[
+									{
+										name: "Jeremy",
+										spec: "Nephrologist",
+										exp: 15,
+										Latitude: 10.998532,
+										Longitude: 77.009224,
+										summary:
+											"lornals djalks dlka sdlka sldajs ldkasj dlkas dlka jskld jalskd jklas djlkasdjl akjsdlk ajsldk jalskd"
+									}
+								]
+							];
 							if (msg.type === "user") {
 								return <UserMsg msg={msg.message} src={user?.photoUrl} />;
 							} else {
-								return <BotMsg msg={msg.message} />;
+								if (msg.doc != null || msg.doc != undefined) {
+									return <BotMsg msg={msg.message} doc={msg.doc} />;
+								} else {
+									return <BotMsg msg={msg.message} doc={[]} />;
+								}
 							}
 						})}
 						{loading && <LoadingMsg />}

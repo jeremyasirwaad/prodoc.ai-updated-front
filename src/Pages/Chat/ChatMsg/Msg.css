@@ -29,6 +29,73 @@
     border-radius: 10px;
 }
 
+.bot-msg-loading-doc{
+    width: 700px;
+    display: flex;
+    flex-direction: column;
+}
+
+.bot-msg-docs{
+    margin-top: 15px;
+    margin-left: 50px;
+
+
+}
+
+.docs-sug{
+    width: 70%;
+    height: 170px;
+    border-radius: 20px;
+    padding: 15px;
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+    border: 0.5px solid black;
+}
+
+.doc-name{
+    font-size: 16px;
+    font-weight: 600;
+
+}
+
+.doc-specs{
+    font-size: 14px;
+}
+
+.doc-summary{
+    font-size: 13px;
+    margin: 5px;
+}
+
+
+.doc-opt-btn{
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+
+.filler{
+    height: 100%;
+}
+
+.doc-opt-btn>button{
+    outline: none;
+    border: none;
+    padding: 5px 13px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.doc-loc-btn{
+    margin-right: 10px;
+}
+
+.doc-book-btn{
+    background-color: rgb(22, 86, 74);
+    color: white;
+}
+
 .bot-msg-loading{
     width: 700px;
     display: flex;
