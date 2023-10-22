@@ -251,14 +251,20 @@
     position: relative;
 }
 
-.chat-input{
+.chat-input-cont{
     position: fixed;
     bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 750px;
+}
+
+.chat-input{
     display: flex;
     flex-direction: row;
     align-items: center;
     width: 750px;
-
 }
 
 .chat-input > textarea{
@@ -273,6 +279,15 @@
 .send-btn{
     position: absolute;
     bottom: 55%;
+    transform: translateY(50%);
+    right: 20px;
+    cursor: pointer;
+
+}
+
+.send-btn-file{
+    position: absolute;
+    bottom: 40%;
     transform: translateY(50%);
     right: 20px;
     cursor: pointer;
@@ -307,7 +322,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 60px;
+    margin-bottom: 80px;
     padding-bottom: 30px;
    
 }
@@ -359,4 +374,14 @@
     margin-right: 5px;
     border-radius: 10px;
     cursor: pointer;
+}
+
+.file-display{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.file-display > span{
+    margin-right: 10px;
 }

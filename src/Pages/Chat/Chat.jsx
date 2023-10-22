@@ -1,6 +1,10 @@
 import React, { useEffect, useState, useContext, useRef } from "react";
 import "./Chat.css";
-import { AiOutlineLayout, AiOutlinePlus } from "react-icons/ai";
+import {
+	AiFillCloseCircle,
+	AiOutlineLayout,
+	AiOutlinePlus
+} from "react-icons/ai";
 import { BiMessageSquare, BiRightTopArrowCircle } from "react-icons/bi";
 import { AiOutlineSend } from "react-icons/ai";
 import { UserMsg } from "./ChatMsg/UserMsg";
@@ -14,8 +18,10 @@ import { model_url, url } from "../../../networl.config";
 import { GrAttachment } from "react-icons/gr";
 import { FiLogOut } from "react-icons/fi";
 import toast, { Toaster } from "react-hot-toast";
+import { Document, pdfjs } from "react-pdf";
 
 export const Chat = () => {
+	pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 	const msgContainerRef = useRef(null);
 	const { user } = useContext(UserContext);
 	const [sidenav, setSidenav] = useState(true);
@@ -29,6 +35,7 @@ export const Chat = () => {
 	const [modelReply, setModelReply] = useState("");
 	const [file, setFile] = useState(null);
 	const [selectedFileName, setSelectedFileName] = useState("");
+	const [fileContents, setFileContents] = useState("");
 	const navigate = useNavigate();
 
 	useEffect(() => {
@@ -52,15 +59,26 @@ export const Chat = () => {
 		// setTimeout(() => {}, 350);
 	};
 
-	const prompt = "";
-
 	const sendPromt = async () => {
+		if (inputPrompt == "") {
+			toast((t) => (
+				<span>
+					Ask a <b>question</b> for the model to reply
+				</span>
+			));
+			return;
+		}
+		var prompt = inputPrompt;
+		if (fileContents != "") {
+			prompt = fileContents + " ----------------> " + inputPrompt;
+		}
 		hideElement();
 		setMsgHistory((oldArray) => [
 			...oldArray,
-			{ type: "user", message: inputPrompt }
+			{ type: "user", message: prompt, model: prompt }
 		]);
 		setLoading(true);
+		setInputPrompt("");
 		try {
 			const response = await fetch(model_url, {
 				method: "POST",
@@ -68,7 +86,8 @@ export const Chat = () => {
 					"Content-Type": "application/json"
 				},
 				body: JSON.stringify({
-					context: inputPrompt
+					context: prompt,
+					history: msgHistory
 				})
 			})
 				.then((res) => res.json())
@@ -76,23 +95,28 @@ export const Chat = () => {
 					setMsgHistory((oldArray) => [
 						...oldArray,
 						{
-							type: "model",
+							type: "assisstant",
 							message: data.message.reply,
-							doc: data.message.doctors
+							doc: data.message.doctors,
+							hos: data.message.hospitals,
+							model: JSON.stringify(data.message.model)
 						}
 					]);
 					setModelReply(data.message.reply);
 					setLoading(false);
 
 					pushHistoryDB([
-						{ type: "user", message: inputPrompt },
+						{ type: "user", message: prompt, model: prompt },
 						{
-							type: "model",
+							type: "assisstant",
 							message: data.message.reply,
-							doc: data.message.doctors
+							doc: data.message.doctors,
+							hos: data.message.hospitals,
+							model: JSON.stringify(data.message.model)
 						}
 					]);
-					setInputPrompt("");
+
+					setFileContents("");
 				});
 		} catch (error) {
 			console.error(error);
@@ -102,17 +126,6 @@ export const Chat = () => {
 	useEffect(() => {
 		updateScroll();
 	}, [msgHistory]);
-
-	// const handleEnterKeyPress = (event) => {
-	// 	if (event.key === "Enter") {
-	// 		sendPromt();
-	// 	}
-	// };
-
-	// useEffect(() => {
-	// 	// Attach event listener when the component mounts
-	// 	document.addEventListener("keydown", handleEnterKeyPress);
-	// }, []);
 
 	function updateScroll() {
 		var element = document.getElementById("msg-cont");
@@ -172,13 +185,13 @@ export const Chat = () => {
 
 	const newChat = () => {
 		setcontextId(uuidv4());
+		setInputPrompt("");
+		setFileContents("");
 		emergeElement();
 	};
 
 	const pdf_file_extract = (acceptedFiles) => {
 		const file = acceptedFiles;
-		setSelectedFileName(file.name);
-
 		const reader = new FileReader();
 
 		reader.onload = async () => {
@@ -195,9 +208,9 @@ export const Chat = () => {
 				textContent += pageText.items.map((item) => item.str).join(" ");
 			}
 
-			setPdfText(textContent);
-			setNumPages(pdf.numPages);
-			HandleSubmit(textContent);
+			console.log(textContent);
+			setFileContents(textContent);
+			setSelectedFileName(file.name);
 		};
 
 		reader.readAsArrayBuffer(file);
@@ -338,41 +351,58 @@ export const Chat = () => {
 						</div>
 					)}
 
-					<div className="chat-input">
-						<div>
-							<label for="fileupload" className="file_upload">
-								<GrAttachment />
-							</label>
-							<input
-								type="file"
-								id="fileupload"
-								accept=".pdf"
-								style={{ display: "none" }}
-								onChange={(e) => {
-									const selectedFile = e.target.files[0];
-									setFile(selectedFile);
-								}}
-							/>
-						</div>
-						<textarea
-							type="text"
-							placeholder="Send a message"
-							value={inputPrompt}
-							onChange={(e) => {
-								setInputPrompt(e.target.value);
-							}}
-						/>
-						{loading ? (
-							<PulseLoader size={4} className="send-btn" />
-						) : (
-							<AiOutlineSend
-								className="send-btn"
-								size={25}
-								onClick={() => {
-									sendPromt();
-								}}
-							/>
+					<div className="chat-input-cont">
+						{fileContents != "" && (
+							<div className="file-display">
+								<span className="selected-file-name">{selectedFileName}</span>
+								<AiFillCloseCircle
+									style={{ cursor: "pointer" }}
+									color="rgb(22, 86, 74)"
+									onClick={() => {
+										setFileContents("");
+									}}
+								/>
+							</div>
 						)}
+
+						<div className="chat-input">
+							<div>
+								<label for="fileupload" className="file_upload">
+									<GrAttachment />
+								</label>
+								<input
+									type="file"
+									id="fileupload"
+									accept=".pdf"
+									style={{ display: "none" }}
+									onChange={(e) => {
+										const selectedFile = e.target.files[0];
+										setFile(selectedFile);
+										pdf_file_extract(selectedFile);
+									}}
+								/>
+							</div>
+							<textarea
+								type="text"
+								placeholder="Send a message"
+								value={inputPrompt}
+								onChange={(e) => {
+									setInputPrompt(e.target.value);
+								}}
+							/>
+							{loading ? (
+								<PulseLoader size={4} className="send-btn" />
+							) : (
+								<AiOutlineSend
+									className={fileContents != "" ? "send-btn-file" : "send-btn"}
+									size={25}
+									onClick={() => {
+										sendPromt();
+									}}
+								/>
+							)}
+						</div>
+						{/* <span>Hello</span> */}
 					</div>
 					<div className="msg-container" id="msg-cont" ref={msgContainerRef}>
 						{msgHistory.map((msg) => {
@@ -392,23 +422,14 @@ export const Chat = () => {
 							if (msg.type === "user") {
 								return <UserMsg msg={msg.message} src={user?.photoUrl} />;
 							} else {
-								if (msg.doc != null || msg.doc != undefined) {
-									return (
-										<BotMsg
-											msg={msg.message}
-											doc={msg.doc}
-											modelReply={modelReply}
-										/>
-									);
-								} else {
-									return (
-										<BotMsg
-											msg={msg.message}
-											doc={[]}
-											modelReply={modelReply}
-										/>
-									);
-								}
+								return (
+									<BotMsg
+										msg={msg.message}
+										doc={msg.doc}
+										hos={msg.hos}
+										modelReply={modelReply}
+									/>
+								);
 							}
 						})}
 						{loading && <LoadingMsg />}

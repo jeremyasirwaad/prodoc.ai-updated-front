@@ -1,12 +1,17 @@
-{
-    "user_id":"sakjda",
-    "history":[
-        {
-            "chat_id":"asdasadsfasdfasdfa",
-            "chats":[
-                "hi",
-                "hello how can i help you"
-            ]
-        }
-    ]
-}
+[
+    {
+        "type":"user",
+        "message":"Hello",
+        "model":"Hello"
+
+    }
+    {
+        "type":"assistent",
+        "message":"hi",
+        "model":'{
+            "reply": "Of course, here are some reputable hospitals for your kidney-related needs.",
+            "specializations": [],
+            "hospital": true
+        }'
+    }
+]

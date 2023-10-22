@@ -135,3 +135,10 @@
     height: 60%;
     margin-right: 15px;
 }
+
+.bot-msg-reponse-type{
+    font-weight: 600;
+    text-decoration: underline;
+    margin-left: 10px;
+    font-size: 16px;
+}
