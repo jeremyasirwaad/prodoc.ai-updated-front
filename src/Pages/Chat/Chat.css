@@ -262,6 +262,13 @@
     position: relative;
 }
 
+.location-status{
+    position: absolute;
+    right: 0px;
+    top: -10px;
+    color: rgb(164, 164, 164);
+}
+
 .chat-input-cont{
     position: fixed;
     bottom: 30px;

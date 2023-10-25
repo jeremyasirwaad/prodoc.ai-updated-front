@@ -24,6 +24,7 @@ import { Document, pdfjs } from "react-pdf";
 export const Chat = () => {
 	pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 	const msgContainerRef = useRef(null);
+	const Enter_button_ref = useRef(null);
 	const { user } = useContext(UserContext);
 	const [sidenav, setSidenav] = useState(true);
 	const [isHidden, setIsHidden] = useState(false);
@@ -37,6 +38,10 @@ export const Chat = () => {
 	const [file, setFile] = useState(null);
 	const [selectedFileName, setSelectedFileName] = useState("");
 	const [fileContents, setFileContents] = useState("");
+	const [location, setLocation] = useState(null);
+	const [city, setCity] = useState("");
+	const [locationStatus, setLocationStatue] = useState(false);
+
 	const navigate = useNavigate();
 
 	useEffect(() => {
@@ -46,6 +51,82 @@ export const Chat = () => {
 			getHistory();
 		}
 	}, [user]);
+
+	useEffect(() => {
+		const checkLocationPermission = async () => {
+			try {
+				const status = await navigator.permissions.query({
+					name: "geolocation"
+				});
+
+				if (status.state === "granted") {
+					// Location permission is already granted
+					navigator.geolocation.getCurrentPosition(
+						async (position) => {
+							const latitude = position.coords.latitude;
+							const longitude = position.coords.longitude;
+							setLocation({ latitude, longitude });
+
+							// Use reverse geocoding to get the city name
+							try {
+								const response = await fetch(
+									`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
+								);
+								const data = await response.json();
+								if (data) {
+									const city = data.address.county;
+									setCity(city);
+									setLocationStatue(true);
+								}
+							} catch (error) {
+								console.error("Error fetching city name:", error);
+							}
+						},
+						(error) => {
+							console.error(error.message);
+						}
+					);
+				} else if (status.state === "prompt") {
+					// Location permission is not granted but can be requested
+					const position = await navigator.geolocation.getCurrentPosition();
+					const latitude = position.coords.latitude;
+					const longitude = position.coords.longitude;
+					setLocation({ latitude, longitude });
+
+					// Use reverse geocoding to get the city name
+					try {
+						const response = await fetch(
+							`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
+						);
+						const data = await response.json();
+						if (data) {
+							const city = data.address.county;
+							setCity(city);
+							console.log(city);
+							setLocationStatue(true);
+						}
+					} catch (error) {
+						console.error("Error fetching city name:", error);
+					}
+				} else {
+					// Location permission is denied
+					console.error("Location permission is denied");
+					setCity("Location Disabled");
+					setLocationStatue(false);
+				}
+			} catch (error) {
+				console.error("Error checking location permission:", error);
+			}
+		};
+
+		checkLocationPermission();
+	}, []);
+
+	function handleEvent(e, data) {
+		if (e.code == "Enter") {
+			sendPromt();
+		}
+	}
 
 	const hideElement = () => {
 		setIsHidden(true);
@@ -70,9 +151,9 @@ export const Chat = () => {
 			return;
 		}
 		var prompt = inputPrompt;
-		if (fileContents != "") {
-			prompt = fileContents + " ----------------> " + inputPrompt;
-		}
+		// if (fileContents != "") {
+		// 	prompt = fileContents + " ----------------> " + inputPrompt;
+		// }
 		hideElement();
 		setMsgHistory((oldArray) => [
 			...oldArray,
@@ -244,7 +325,7 @@ export const Chat = () => {
 	};
 
 	return (
-		<div className="chat-page">
+		<div className="chat-page" ref={Enter_button_ref}>
 			<Toaster position="top-right" reverseOrder={false} />
 			<div
 				className={sidenav ? "chat-sidebar" : "chat-sidebar side-bar-closed"}
@@ -335,6 +416,13 @@ export const Chat = () => {
 				</div>
 
 				<div className="chat-cont">
+					<span className="location-status">
+						{city == "" ? (
+							<PulseLoader size={7} color="rgb(164, 164, 164)" />
+						) : (
+							city
+						)}
+					</span>
 					<span
 						className={`chat-hero ${isHidden ? "transition-hero" : ""}`}
 						onClick={updateScroll}
