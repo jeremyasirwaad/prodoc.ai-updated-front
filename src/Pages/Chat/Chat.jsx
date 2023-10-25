@@ -3,7 +3,8 @@ import "./Chat.css";
 import {
 	AiFillCloseCircle,
 	AiOutlineLayout,
-	AiOutlinePlus
+	AiOutlinePlus,
+	AiOutlineClose
 } from "react-icons/ai";
 import { BiMessageSquare, BiRightTopArrowCircle } from "react-icons/bi";
 import { AiOutlineSend } from "react-icons/ai";
@@ -216,6 +217,32 @@ export const Chat = () => {
 		reader.readAsArrayBuffer(file);
 	};
 
+	const deleteHistory = async (e, chatid) => {
+		e.stopPropagation();
+		const filtered_his = sidebarhistory.filter((his) => {
+			return his.chat_id != chatid;
+		});
+		setSidebarhistory(filtered_his);
+		try {
+			const response = await fetch(`${url}delHistory`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify({
+					uid: user?.uid,
+					chatid: chatid
+				})
+			})
+				.then((res) => res.json())
+				.then((data) => {
+					toast.success("Chat deleted");
+				});
+		} catch (error) {
+			console.error(error);
+		}
+	};
+
 	return (
 		<div className="chat-page">
 			<Toaster position="top-right" reverseOrder={false} />
@@ -250,10 +277,27 @@ export const Chat = () => {
 									onhandleSideClicks(data);
 								}}
 							>
-								<BiMessageSquare size={19} color="white" />
-								<span className="chat-history-title">
-									{data.chats[0].message.slice(0, 17)}
-								</span>
+								<div
+									style={{
+										display: "flex",
+										alignItems: "center",
+										justifyContent: "center"
+									}}
+								>
+									<BiMessageSquare size={19} color="white" />
+									<span className="chat-history-title">
+										{data.chats[0].message.slice(0, 17)}
+									</span>
+								</div>
+
+								<AiOutlineClose
+									className="chat-his-del-btn"
+									size={17}
+									color="white"
+									onClick={(e) => {
+										deleteHistory(e, data.chat_id);
+									}}
+								/>
 							</div>
 						);
 					})}

@@ -94,18 +94,28 @@
 .chat-component{
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: space-between;
     margin-top: 10px;
     padding: 10px;
     border-radius: 10px;
     width: 100%;
 }
 
+.chat-his-del-btn
+{
+    display: none;
+}
+
 .chat-component:hover{
     background-color: rgb(26, 103, 89);
     cursor: pointer;
-
 }
+
+.chat-component:hover .chat-his-del-btn{
+    display: flex;
+}
+
+
 
 
 .side-bar-profile-section{
@@ -128,6 +138,7 @@
     color: white;
     font-weight: 200;
    font-size: 15px;
+  
    /* background: linear-gradient(to right, transparent 0%, #fff 100%); */
 }
 
