@@ -269,7 +269,7 @@ export const Chat = () => {
 					</button>
 				</div>
 				<div className="chat-history">
-					{sidebarhistory.slice(0, 10).map((data) => {
+					{sidebarhistory.map((data) => {
 						return (
 							<div
 								className="chat-component"
