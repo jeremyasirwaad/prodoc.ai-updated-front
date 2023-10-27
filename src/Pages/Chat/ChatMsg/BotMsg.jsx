@@ -51,10 +51,30 @@ export const BotMsg = ({ msg, doc, modelReply, hos }) => {
 		}
 	};
 
+	function formatText(inputText) {
+		const lines = inputText.split("*"); // Split the text into lines using '*'
+
+		// Process each line and format as needed
+		const formattedLines = lines.map((line) => {
+			if (line.trim() === "") {
+				return "<br>"; // Replace empty lines with a line break
+			} else {
+				// Wrap non-empty lines in <h5> tags
+				return `<h5>${line.trim()}</h5>`;
+			}
+		});
+
+		// Join the formatted lines back together
+		const formattedText = formattedLines.join("");
+
+		return formattedText;
+	}
+
 	return (
 		<div className="bot-msg-loading-doc">
 			<div className="bot-msg-loading">
 				<img src={logo} alt="" />
+
 				<span>{msg}</span>
 			</div>
 			{doc.length > 0 ? (

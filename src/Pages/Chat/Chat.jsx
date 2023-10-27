@@ -199,6 +199,7 @@ export const Chat = () => {
 					]);
 
 					setFileContents("");
+					document.getElementById("fileupload").value = null;
 				});
 		} catch (error) {
 			console.error(error);
@@ -229,6 +230,8 @@ export const Chat = () => {
 					chat_id: contextId,
 					chats: chatArray
 				})
+			}).then(() => {
+				getHistory();
 			});
 		} catch (error) {
 			console.error(error);
@@ -260,6 +263,7 @@ export const Chat = () => {
 			(data) => data.chat_id == side_nav.chat_id
 		);
 		console.log(filtered_history[0].chats);
+		setcontextId(side_nav.chat_id);
 		hideElement();
 		setMsgHistory(filtered_history[0].chats);
 		// console.log(side_nav);
@@ -323,6 +327,8 @@ export const Chat = () => {
 			console.error(error);
 		}
 	};
+
+	
 
 	return (
 		<div className="chat-page" ref={Enter_button_ref}>
@@ -565,8 +571,6 @@ export const Chat = () => {
 							}
 						})}
 						{loading && <LoadingMsg />}
-						{/* <UserMsg msg={"Suggest me a good neonatal hospital nearby"} />
-						<BotMsg msg={"Here is a list of good neanatal hospitals nearby"} /> */}
 					</div>
 				</div>
 			</div>
