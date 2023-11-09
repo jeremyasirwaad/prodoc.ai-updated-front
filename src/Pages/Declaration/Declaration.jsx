@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import "./Declaration.css";
 import logo from "../../assets/prodoc.png";
 import { useNavigate } from "react-router-dom";
-import { url } from "../../../networl.config";
+import { local, url } from "../../../networl.config";
 import UserContext from "../../UserProvider";
 
 export const Declaration = () => {
@@ -12,7 +12,7 @@ export const Declaration = () => {
 
 	const declaration = async () => {
 		try {
-			const response = await fetch(`${url}declaration`, {
+			const response = await fetch(`${local}declaration`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json"

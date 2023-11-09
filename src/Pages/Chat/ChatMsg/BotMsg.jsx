@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import logo from "../../../assets/prodoc.png";
-import { url } from "../../../../networl.config";
+import { url, local } from "../../../../networl.config";
 import UserContext from "../../../UserProvider";
 import toast from "react-hot-toast";
 import tick from "../../../assets/check-green.gif";
@@ -11,7 +11,7 @@ export const BotMsg = ({ msg, doc, modelReply, hos }) => {
 
 	const sendMail_Hospital = async (hospital, location, message, email) => {
 		try {
-			const response = await fetch(`${url}sendEmailToHospital`, {
+			const response = await fetch(`${local}sendEmailToHospital`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json"

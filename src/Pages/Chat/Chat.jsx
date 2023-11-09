@@ -15,7 +15,7 @@ import { PulseLoader } from "react-spinners";
 import { json, useNavigate } from "react-router-dom";
 import UserContext from "../../UserProvider";
 import { v4 as uuidv4 } from "uuid";
-import { model_url, openAI_url, url } from "../../../networl.config";
+import { local, model_url, openAI_url, url } from "../../../networl.config";
 import { GrAttachment } from "react-icons/gr";
 import { FiLogOut } from "react-icons/fi";
 import toast, { Toaster } from "react-hot-toast";
@@ -285,7 +285,7 @@ export const Chat = () => {
 
 	const pushHistoryDB = async (chatArray) => {
 		try {
-			const response = await fetch(`${url}addHistory`, {
+			const response = await fetch(`${local}addHistory`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json"
@@ -305,7 +305,7 @@ export const Chat = () => {
 
 	const getHistory = async () => {
 		try {
-			const response = await fetch(`${url}getHistory`, {
+			const response = await fetch(`${local}getHistory`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json"
@@ -374,7 +374,7 @@ export const Chat = () => {
 		});
 		setSidebarhistory(filtered_his);
 		try {
-			const response = await fetch(`${url}delHistory`, {
+			const response = await fetch(`${local}delHistory`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json"

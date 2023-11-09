@@ -10,7 +10,7 @@ import { auth, jwt_key } from "../../config-firebase";
 import { FacebookAuthProvider, GoogleAuthProvider } from "firebase/auth";
 import { signInWithPopup } from "firebase/auth";
 import UserContext from "../../UserProvider";
-import { url } from "../../../networl.config";
+import { local, url } from "../../../networl.config";
 import PulseLoader from "react-spinners/PulseLoader";
 
 export const Login = () => {
@@ -35,7 +35,7 @@ export const Login = () => {
 				localStorage.setItem("user-prodoc", token);
 				setUser(user);
 				try {
-					const response = await fetch(`${url}users`, {
+					const response = await fetch(`${local}users`, {
 						method: "POST",
 						headers: {
 							"Content-Type": "application/json"
