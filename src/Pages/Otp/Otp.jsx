@@ -6,7 +6,7 @@ import "react-phone-input-2/lib/style.css";
 import OTPInput, { ResendOTP } from "otp-input-react";
 import toast, { Toaster } from "react-hot-toast";
 import UserContext from "../../UserProvider";
-import { local, url } from "../../../networl.config";
+import { url } from "../../../networl.config";
 import { useNavigate } from "react-router-dom";
 useNavigate;
 

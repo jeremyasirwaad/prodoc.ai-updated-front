@@ -10,7 +10,7 @@ import { auth, jwt_key } from "../../config-firebase";
 import { FacebookAuthProvider, GoogleAuthProvider } from "firebase/auth";
 import { signInWithPopup } from "firebase/auth";
 import UserContext from "../../UserProvider";
-import { local, url } from "../../../networl.config";
+import { url } from "../../../networl.config";
 import PulseLoader from "react-spinners/PulseLoader";
 
 export const Login = () => {

@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import logo from "../../../assets/prodoc.png";
-import { url, local } from "../../../../networl.config";
+import { url } from "../../../../networl.config";
 import UserContext from "../../../UserProvider";
 import toast from "react-hot-toast";
 import tick from "../../../assets/check-green.gif";
