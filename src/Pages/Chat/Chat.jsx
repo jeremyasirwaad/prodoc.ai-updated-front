@@ -12,10 +12,10 @@ import { UserMsg } from "./ChatMsg/UserMsg";
 import { BotMsg } from "./ChatMsg/BotMsg";
 import { LoadingMsg } from "./ChatMsg/LoadingMsg";
 import { PulseLoader } from "react-spinners";
-import { useNavigate } from "react-router-dom";
+import { json, useNavigate } from "react-router-dom";
 import UserContext from "../../UserProvider";
 import { v4 as uuidv4 } from "uuid";
-import { model_url, url } from "../../../networl.config";
+import { model_url, openAI_url, url } from "../../../networl.config";
 import { GrAttachment } from "react-icons/gr";
 import { FiLogOut } from "react-icons/fi";
 import toast, { Toaster } from "react-hot-toast";
@@ -206,6 +206,71 @@ export const Chat = () => {
 		}
 	};
 
+	const sendPromt_OpenAI = async () => {
+		if (inputPrompt == "") {
+			toast((t) => (
+				<span>
+					Ask a <b>question</b> for the model to reply
+				</span>
+			));
+			return;
+		}
+		var prompt = inputPrompt;
+
+		hideElement();
+		setMsgHistory((oldArray) => [
+			...oldArray,
+			{ type: "user", message: prompt, model: prompt }
+		]);
+		setLoading(true);
+		setInputPrompt("");
+		console.log({
+			query: prompt,
+			report: fileContents
+		});
+		try {
+			const response = await fetch(openAI_url, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify({
+					query: prompt,
+					report: fileContents
+				})
+			})
+				.then((res) => res.json())
+				.then((data) => {
+					setMsgHistory((oldArray) => [
+						...oldArray,
+						{
+							type: "assistant",
+							message: data.message,
+							doc: data.Doctor && data.Doctor.length > 0 ? data.Doctor : [],
+							hos:
+								data.Hospital && data.Hospital.length > 0 ? data.Hospital : []
+						}
+					]);
+					setModelReply(data.message.reply);
+					setLoading(false);
+					pushHistoryDB([
+						{ type: "user", message: prompt, model: prompt },
+						{
+							type: "assisstant",
+							message: data.message,
+							doc: data.Doctor && data.Doctor.length > 0 ? data.Doctor : [],
+							hos:
+								data.Hospital && data.Hospital.length > 0 ? data.Hospital : []
+						}
+					]);
+					setFileContents("");
+					document.getElementById("fileupload").value = null;
+				});
+		} catch (error) {
+			console.error(error);
+		}
+	};
+
 	useEffect(() => {
 		updateScroll();
 	}, [msgHistory]);
@@ -327,8 +392,6 @@ export const Chat = () => {
 			console.error(error);
 		}
 	};
-
-	
 
 	return (
 		<div className="chat-page" ref={Enter_button_ref}>
@@ -535,7 +598,7 @@ export const Chat = () => {
 									className={fileContents != "" ? "send-btn-file" : "send-btn"}
 									size={25}
 									onClick={() => {
-										sendPromt();
+										sendPromt_OpenAI();
 									}}
 								/>
 							)}
