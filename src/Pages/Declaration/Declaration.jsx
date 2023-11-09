@@ -12,7 +12,7 @@ export const Declaration = () => {
 
 	const declaration = async () => {
 		try {
-			const response = await fetch(`${local}declaration`, {
+			const response = await fetch(`${url}declaration`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json"

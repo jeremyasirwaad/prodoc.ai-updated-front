@@ -285,7 +285,7 @@ export const Chat = () => {
 
 	const pushHistoryDB = async (chatArray) => {
 		try {
-			const response = await fetch(`${local}addHistory`, {
+			const response = await fetch(`${url}addHistory`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json"
@@ -305,7 +305,7 @@ export const Chat = () => {
 
 	const getHistory = async () => {
 		try {
-			const response = await fetch(`${local}getHistory`, {
+			const response = await fetch(`${url}getHistory`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json"
@@ -374,7 +374,7 @@ export const Chat = () => {
 		});
 		setSidebarhistory(filtered_his);
 		try {
-			const response = await fetch(`${local}delHistory`, {
+			const response = await fetch(`${url}delHistory`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json"

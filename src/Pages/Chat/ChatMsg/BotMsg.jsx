@@ -11,7 +11,7 @@ export const BotMsg = ({ msg, doc, modelReply, hos }) => {
 
 	const sendMail_Hospital = async (hospital, location, message, email) => {
 		try {
-			const response = await fetch(`${local}sendEmailToHospital`, {
+			const response = await fetch(`${url}sendEmailToHospital`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json"

@@ -35,7 +35,7 @@ export const Login = () => {
 				localStorage.setItem("user-prodoc", token);
 				setUser(user);
 				try {
-					const response = await fetch(`${local}users`, {
+					const response = await fetch(`${url}users`, {
 						method: "POST",
 						headers: {
 							"Content-Type": "application/json"
