@@ -33,7 +33,7 @@ export const Forms = () => {
 	const [summary, setSummary] = useState("");
 	const { isLoaded } = useJsApiLoader({
 		libraries: ["places"],
-		googleMapsApiKey: "AIzaSyALpo0qUtWD76F0hQv37ybTDfMyTnrLb58"
+		googleMapsApiKey: process.env.MAP_API_KEY
 	});
 
 	if (!isLoaded) {

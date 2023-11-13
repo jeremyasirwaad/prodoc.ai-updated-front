@@ -285,7 +285,7 @@ export const Chat = () => {
 
 	const sendPromt_OpenAI = async () => {
 		console.log(is_24hrs_pass(user["pass_last_brought"]));
-		if (!is_24hrs_pass(user["pass_last_brought"]) && user["free_limit"] >= 1) {
+		if (!is_24hrs_pass(user["pass_last_brought"]) && user["free_limit"] >= 5) {
 			setShow_limit_over(true);
 			return;
 		}
