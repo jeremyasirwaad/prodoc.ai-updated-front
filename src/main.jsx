@@ -18,7 +18,6 @@ import { Declaration } from "./Pages/Declaration/Declaration.jsx";
 import { Otp } from "./Pages/Otp/Otp.jsx";
 import { Faq } from "./Pages/Faq/Faq.jsx";
 import { Forms } from "./Pages/Forms/Forms.jsx";
-import { Form_nav } from "./Pages/Forms/form_nav.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
 	<React.StrictMode>
@@ -73,14 +72,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 							</>
 						}
 					/>
-					<Route
-						path="/formtype"
-						element={
-							<>
-								<Form_nav />
-							</>
-						}
-					/>
+
 					<Route
 						path="/otp"
 						element={
