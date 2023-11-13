@@ -61,7 +61,22 @@ function App() {
 			<div className="landing-sec2">
 				<div className="navbar-right">
 					<div className="navbar-right-inner">
-						<span className="navbar-right-faq">FAQ</span>
+						<span
+							onClick={() => {
+								navigate("/forms");
+							}}
+							className="navbar-right-faq"
+						>
+							Get Listed
+						</span>
+						<span
+							onClick={() => {
+								navigate("/faq");
+							}}
+							className="navbar-right-faq"
+						>
+							FAQ
+						</span>
 						<span
 							className="navbar-right-login-btn"
 							onClick={() => {
@@ -103,7 +118,17 @@ function App() {
 						</div>
 					</div>
 				</div>
-				<div className="term-privacy">Terms of use | Privacy Policy</div>
+				<div className="term-privacy">
+					Terms of use |{" "}
+					<span
+						style={{ cursor: "pointer" }}
+						onClick={() => {
+							navigate("/declaration/view");
+						}}
+					>
+						Privacy Policy
+					</span>
+				</div>
 			</div>
 		</div>
 	);

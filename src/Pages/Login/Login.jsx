@@ -12,6 +12,7 @@ import { signInWithPopup } from "firebase/auth";
 import UserContext from "../../UserProvider";
 import { url } from "../../../networl.config";
 import PulseLoader from "react-spinners/PulseLoader";
+import { is_24hrs_pass } from "../../helpers/Helpers";
 
 export const Login = () => {
 	const [loginClick, setLoginClick] = useState(false);
@@ -30,10 +31,7 @@ export const Login = () => {
 					phoneNumber: data.user.phoneNumber,
 					displayName: data.user.displayName
 				};
-				const token = jwt.sign(user, jwt_key, { expiresIn });
-				console.log(token);
-				localStorage.setItem("user-prodoc", token);
-				setUser(user);
+
 				try {
 					const response = await fetch(`${url}users`, {
 						method: "POST",
@@ -44,10 +42,17 @@ export const Login = () => {
 					})
 						.then((res) => res.json())
 						.then((data) => {
+							user["free_limit"] = data.free_limit;
+							user["pass_last_brought"] = data.pass_last_brought;
+
+							const token = jwt.sign(user, jwt_key, { expiresIn });
+							console.log(token);
+							localStorage.setItem("user-prodoc", token);
+							setUser(user);
 							if (data.mob_otp_flag == false) {
 								navigate("/otp");
 							} else if (data.declar_flag == false) {
-								navigate("/declaration");
+								navigate("/declaration/login");
 							} else {
 								navigate("/chat");
 							}

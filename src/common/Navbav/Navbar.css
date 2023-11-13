@@ -59,6 +59,7 @@
     margin-right: 30px;
     background-color:rgb(23,113,210);
     color: white;
+    cursor: pointer;
 }
 
 .navbar-right-login-btn{

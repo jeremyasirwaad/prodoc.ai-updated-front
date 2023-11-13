@@ -8,7 +8,7 @@ import toast, { Toaster } from "react-hot-toast";
 import UserContext from "../../UserProvider";
 import { url } from "../../../networl.config";
 import { useNavigate } from "react-router-dom";
-useNavigate;
+import { useEffect } from "react";
 
 export const Otp = () => {
 	const navigate = useNavigate();
@@ -17,6 +17,32 @@ export const Otp = () => {
 	const [otpSent, setOtpSent] = useState(false);
 	const [otp, setOtp] = useState("");
 	const [key, setKey] = useState("");
+	const [timer, setTimer] = useState(60); // Initial timer value in seconds
+	const [isResendDisabled, setIsResendDisabled] = useState(false);
+
+	useEffect(() => {
+		let interval;
+
+		// Start the timer
+		if (timer > 0) {
+			interval = setInterval(() => {
+				setTimer((prevTimer) => prevTimer - 1);
+			}, 1000);
+		} else {
+			// Timer reached 0, enable the resend button
+			setIsResendDisabled(true);
+			clearInterval(interval);
+		}
+
+		// Clean up the interval on component unmount
+		return () => clearInterval(interval);
+	}, [timer]);
+
+	const handleResendClick = () => {
+		// Disable the button and reset the timer
+		setIsResendDisabled(false);
+		setTimer(60); // Reset the timer to your initial value
+	};
 
 	const sendOtp = async () => {
 		if (!phoneNo) {
@@ -62,7 +88,7 @@ export const Otp = () => {
 				.then((data) => {
 					if (data.status) {
 						if (data.type == false) {
-							navigate("/declaration");
+							navigate("/declaration/login");
 						} else {
 							navigate("/chat");
 						}
@@ -91,6 +117,7 @@ export const Otp = () => {
 							value={phoneNo}
 							onChange={(phone) => setPhoneNo(phone)}
 						/>
+
 						<button
 							className="get_otp_btn"
 							onClick={() => {
@@ -114,6 +141,20 @@ export const Otp = () => {
 							otpType="number"
 							disabled={false}
 						/>
+						{!isResendDisabled ? (
+							<span className="resend-otp">
+								Resend in 0:{timer.toString().padStart(2, "0")}
+							</span>
+						) : (
+							<span
+								className="resend-otp-enabled"
+								onClick={() => {
+									sendOtp();
+								}}
+							>
+								Resend OTP
+							</span>
+						)}
 						<button
 							className="get_otp_btn"
 							onClick={() => {
@@ -125,7 +166,17 @@ export const Otp = () => {
 					</>
 				)}
 			</div>
-			<div className="term-privacy-login">Terms of use | Privacy Policy</div>
+			<div className="term-privacy-login">
+				Terms of use |{" "}
+				<span
+					style={{ cursor: "pointer" }}
+					onClick={() => {
+						navigate("/declaration/view");
+					}}
+				>
+					Privacy Policy
+				</span>
+			</div>
 		</div>
 	);
 };

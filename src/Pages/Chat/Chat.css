@@ -54,7 +54,7 @@
 
 .side-bar-close{
     width: 20%;
-    background-color: rgb(22, 86, 74);
+    background-color: #16564a;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -130,7 +130,7 @@
     padding: 15px;
     /* background-color: rgb(200, 218, 215); */
     z-index: 10;
-    height: 165px;
+    /* height: 165px; */
 }
 
 .chat-history-title{
@@ -157,7 +157,7 @@
     justify-content: flex-start;
     width: 100%;
     margin-top: 20px;
-    margin-bottom: 20px;
+
     padding: 10px;
     /* margin-bottom: 10px; */
 }
@@ -181,6 +181,7 @@
     color: white;
     align-items: center;
     font-weight: 300;
+    margin-top: 20px;
 }
 
 .side-nav-profile > img{
@@ -317,9 +318,20 @@
     top: 20px;
     font-size: 60px;
     font-weight: 600;
-    color: rgb(207, 207, 207);
+    color: #cfcfcf;
     opacity: 1;
     transition: all 0.4s;
+    display: flex;
+    align-items: flex-end;
+}
+
+.chat-hero-badge{
+    height: 50px;
+    transition: all 0.4s;
+}
+
+.chat-hero-badge-transition{
+    height: 30px;
 }
 
 .transition-hide{

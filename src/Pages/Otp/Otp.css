@@ -30,6 +30,20 @@
     cursor: pointer;
 }
 
+.resend-otp{
+    align-self: flex-end;
+    margin-top: 25px;
+    color: rgb(120, 120, 120);
+    cursor: not-allowed;
+}
+
+.resend-otp-enabled{
+    align-self: flex-end;
+    margin-top: 25px;
+    color: rgb(22, 86, 74);
+    cursor: pointer;
+}
+
 .react-tel-input {
     height: 40px;
 

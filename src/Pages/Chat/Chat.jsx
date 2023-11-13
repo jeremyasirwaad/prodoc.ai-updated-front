@@ -20,12 +20,16 @@ import { GrAttachment } from "react-icons/gr";
 import { FiLogOut } from "react-icons/fi";
 import toast, { Toaster } from "react-hot-toast";
 import { Document, pdfjs } from "react-pdf";
+import { Limit_over } from "../../PopUps/Limit_over.jsx";
+import { is_24hrs_pass } from "../../helpers/Helpers.js";
+import badge_24hrs from "../../assets/logo_only_24hrs.png";
+import axios from "axios";
 
 export const Chat = () => {
 	pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 	const msgContainerRef = useRef(null);
 	const Enter_button_ref = useRef(null);
-	const { user } = useContext(UserContext);
+	const { user, setUser } = useContext(UserContext);
 	const [sidenav, setSidenav] = useState(true);
 	const [isHidden, setIsHidden] = useState(false);
 	const [hidele, setHidele] = useState(false);
@@ -41,6 +45,7 @@ export const Chat = () => {
 	const [location, setLocation] = useState(null);
 	const [city, setCity] = useState("");
 	const [locationStatus, setLocationStatue] = useState(false);
+	const [show_limit_over, setShow_limit_over] = useState(false);
 
 	const navigate = useNavigate();
 
@@ -49,6 +54,7 @@ export const Chat = () => {
 			navigate("/");
 		} else {
 			getHistory();
+			console.log(user);
 		}
 	}, [user]);
 
@@ -122,10 +128,80 @@ export const Chat = () => {
 		checkLocationPermission();
 	}, []);
 
-	function handleEvent(e, data) {
-		if (e.code == "Enter") {
-			sendPromt();
+	function loadScript(src) {
+		return new Promise((resolve) => {
+			const script = document.createElement("script");
+			script.src = src;
+			script.onload = () => {
+				resolve(true);
+			};
+			script.onerror = () => {
+				resolve(false);
+			};
+			document.body.appendChild(script);
+		});
+	}
+
+	async function displayRazorpay() {
+		const res = await loadScript(
+			"https://checkout.razorpay.com/v1/checkout.js"
+		);
+
+		if (!res) {
+			alert("Razorpay SDK failed to load. Are you online?");
+			return;
 		}
+
+		// creating a new order
+		const result = await axios.post(`${url}payment/orders`);
+
+		if (!result) {
+			alert("Server error. Are you online?");
+			return;
+		}
+
+		// Getting the order details back
+		const { amount, id: order_id, currency } = result.data;
+
+		const options = {
+			key: "rzp_test_0a6Ol91FCqsw02", // Enter the Key ID generated from the Dashboard
+			amount: amount.toString(),
+			currency: currency,
+			name: "Prodoc.ai",
+			description: "24-hrs Unlimited free pass",
+			order_id: order_id,
+			handler: async function (response) {
+				const data = {
+					orderCreationId: order_id,
+					razorpayPaymentId: response.razorpay_payment_id,
+					razorpayOrderId: response.razorpay_order_id,
+					razorpaySignature: response.razorpay_signature
+				};
+
+				const result = await axios.post(`${url}payment/success`, {
+					payment: data,
+					uid: user["uid"]
+				});
+
+				if (result.data.status == true) {
+					window.location.reload();
+				}
+			},
+			prefill: {
+				name: user["displayName"],
+				email: user["email"],
+				contact: user["mob_otp"]
+			},
+			notes: {
+				address: "Prodoc.ai"
+			},
+			theme: {
+				color: "#16564a"
+			}
+		};
+
+		const paymentObject = new window.Razorpay(options);
+		paymentObject.open();
 	}
 
 	const hideElement = () => {
@@ -145,7 +221,8 @@ export const Chat = () => {
 		if (inputPrompt == "") {
 			toast((t) => (
 				<span>
-					Ask a <b>question</b> for the model to reply
+					Please provide a <b>specific question</b> or <b>inquiry</b> along with
+					the medical report for a more accurate and helpful response
 				</span>
 			));
 			return;
@@ -207,10 +284,20 @@ export const Chat = () => {
 	};
 
 	const sendPromt_OpenAI = async () => {
+		console.log(is_24hrs_pass(user["pass_last_brought"]));
+		if (!is_24hrs_pass(user["pass_last_brought"]) && user["free_limit"] >= 1) {
+			setShow_limit_over(true);
+			return;
+		}
+
+		console.log(user["free_limit"]);
+
 		if (inputPrompt == "") {
 			toast((t) => (
 				<span>
-					Ask a <b>question</b> for the model to reply
+					Please provide a <b>specific question</b> or <b>inquiry</b> along with{" "}
+					<b>medical report </b>
+					for a more accurate and helpful response
 				</span>
 			));
 			return;
@@ -263,6 +350,8 @@ export const Chat = () => {
 								data.Hospital && data.Hospital.length > 0 ? data.Hospital : []
 						}
 					]);
+					user["free_limit"] = user["free_limit"] + 1;
+					setUser(user);
 					setFileContents("");
 					document.getElementById("fileupload").value = null;
 				});
@@ -293,7 +382,8 @@ export const Chat = () => {
 				body: JSON.stringify({
 					uid: user.uid,
 					chat_id: contextId,
-					chats: chatArray
+					chats: chatArray,
+					is_24hrs: is_24hrs_pass(user["pass_last_brought"])
 				})
 			}).then(() => {
 				getHistory();
@@ -316,6 +406,7 @@ export const Chat = () => {
 			})
 				.then((res) => res.json())
 				.then((data) => {
+					console.log(data);
 					setSidebarhistory(data.data[0].history);
 				});
 		} catch (error) {
@@ -396,6 +487,12 @@ export const Chat = () => {
 	return (
 		<div className="chat-page" ref={Enter_button_ref}>
 			<Toaster position="top-right" reverseOrder={false} />
+			{show_limit_over && (
+				<Limit_over
+					close={setShow_limit_over}
+					displayRazorpay={displayRazorpay}
+				/>
+			)}
 			<div
 				className={sidenav ? "chat-sidebar" : "chat-sidebar side-bar-closed"}
 			>
@@ -454,10 +551,18 @@ export const Chat = () => {
 				</div>
 				<div className="side-bar-profile-section">
 					<div className="profile-divider"></div>
-					<div className="upgrade-pro">
-						<BiRightTopArrowCircle color="white" size={19} />
-						<span> Upgrade to Pro</span>
-					</div>
+					{user && !is_24hrs_pass(user["pass_last_brought"]) && (
+						<div
+							className="upgrade-pro"
+							onClick={() => {
+								setShow_limit_over(true);
+							}}
+						>
+							<BiRightTopArrowCircle color="white" size={19} />
+							<span>Buy 24-hrs Pass</span>
+						</div>
+					)}
+
 					<div className="side-nav-profile">
 						<img src={user?.photoUrl} alt="" />
 						<span>{user?.displayName}</span>
@@ -497,6 +602,15 @@ export const Chat = () => {
 						onClick={updateScroll}
 					>
 						Prodoc.ai
+						{user && is_24hrs_pass(user["pass_last_brought"]) && (
+							<img
+								className={`chat-hero-badge ${
+									isHidden ? "chat-hero-badge-transition" : ""
+								}`}
+								src={badge_24hrs}
+								alt=""
+							/>
+						)}
 					</span>
 
 					{!hidele && (

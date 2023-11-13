@@ -51,6 +51,37 @@ export const BotMsg = ({ msg, doc, modelReply, hos }) => {
 		}
 	};
 
+	const send_lead_aggregator = async (doc) => {
+		const body = {
+			name: user.displayName,
+			phone_number: user.mob_otp,
+			email: user.email,
+			source: "Prodoc.ai",
+			last_contacted_time: Date.now().toString(),
+			concerned_doc: doc.doctor_name,
+			comments: doc.clinic_name + " - " + doc.specialization,
+			lead_state: "Created"
+		};
+
+		const lead_url =
+			"https://api-prodoc.dev.diginnovators.com/aws/v1/lead_aggregator";
+
+		try {
+			const response = await fetch(lead_url, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					"Api-Key": "g0SAK2pSti8uvnOgkVmzt833bA1SWR2M"
+				},
+				body: JSON.stringify(body)
+			})
+				.then((res) => res.json())
+				.then((data) => {});
+		} catch (error) {
+			console.error(error);
+		}
+	};
+
 	function formatText(inputText) {
 		const lines = inputText.split("*"); // Split the text into lines using '*'
 
@@ -132,6 +163,7 @@ export const BotMsg = ({ msg, doc, modelReply, hos }) => {
 														modelReply,
 														"inbound@prodoc.io"
 													);
+													send_lead_aggregator(indi_doc);
 													setTimeout(() => {
 														toast.custom(() => (
 															<div className="mail-sent-popup">

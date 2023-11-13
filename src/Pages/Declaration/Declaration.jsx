@@ -1,11 +1,12 @@
 import React, { useContext, useState } from "react";
 import "./Declaration.css";
 import logo from "../../assets/prodoc.png";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { url } from "../../../networl.config";
 import UserContext from "../../UserProvider";
 
 export const Declaration = () => {
+	const { login } = useParams();
 	const { user } = useContext(UserContext);
 	const navigate = useNavigate();
 	const [agreement_tick, setAgreement_tick] = useState(false);
@@ -325,15 +326,18 @@ export const Declaration = () => {
 						</p>
 					</li>
 				</ol>
-				<div className="privacy_checkbox">
-					<input
-						type="checkbox"
-						onClick={() => {
-							setAgreement_tick(true);
-						}}
-					/>
-					<span>I agree with the terms and conditions mentioned above</span>
-				</div>
+				{login == "login" && (
+					<div className="privacy_checkbox">
+						<input
+							type="checkbox"
+							onClick={() => {
+								setAgreement_tick(true);
+							}}
+						/>
+						<span>I agree with the terms and conditions mentioned above</span>
+					</div>
+				)}
+
 				<div className="accept_btn_cont">
 					{agreement_tick && (
 						<button
