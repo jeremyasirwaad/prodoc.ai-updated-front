@@ -4,8 +4,6 @@
     display: flex;
     align-items: center;
 }
-
-
 .nav-title{
     color: rgb(23,113,210);
     font-weight: 600;
@@ -75,4 +73,33 @@
     color:rgb(23,113,210);
     font-weight: 500;
 
+}
+
+@media only screen and (max-width:980px){
+    .navbar{
+        width: 100vw;
+        height: 80px;
+        display: flex;
+        align-items: center;
+    }
+    .nav-title{
+        font-size: 19px;
+        margin-left: 5px;
+    }
+
+    .nav-logo{
+        display: flex;
+        align-items: center;
+        margin-left: 30px;
+        justify-content: center;
+    }
+    
+    .nav-logo > img{
+        height: 28px;
+        width: auto;
+    }
+
+    .beta-tag{
+        font-size: 9px;
+    }
 }

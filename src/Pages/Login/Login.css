@@ -64,3 +64,34 @@
     transform: translateX(50%);
     color: black;
 }
+
+@media only screen and (max-width:550px)
+{
+    .login-logo > img{
+        width: 45px;
+    }
+
+    .login-btns > span{
+        font-size: 28px;
+        color: black !important;
+    }
+    
+    .login-btns > button{
+        width: 300px;
+    }
+    
+    .login-btns > button > img{
+        height: 25px;
+        width: auto;
+        margin-right: 15px;
+    }
+
+    .term-privacy-login{
+        position: absolute;
+        bottom: 13px;
+        right: 50%;
+        transform: translateX(50%);
+        color: black;
+        font-size: 12px;
+    }
+}

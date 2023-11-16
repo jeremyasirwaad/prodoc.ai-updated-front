@@ -669,7 +669,9 @@ export const Chat = () => {
 					<div className="chat-input-cont">
 						{fileContents != "" && (
 							<div className="file-display">
-								<span className="selected-file-name">{selectedFileName}</span>
+								<span className="selected-file-name">
+									{selectedFileName.slice(0, 40)}
+								</span>
 								<AiFillCloseCircle
 									style={{ cursor: "pointer" }}
 									color="rgb(22, 86, 74)"

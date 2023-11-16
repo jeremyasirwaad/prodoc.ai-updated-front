@@ -25,7 +25,6 @@
     flex-direction: column;
     align-items: flex-start;
     z-index: 25;
-
 }
 
 .limit_over_inner{
@@ -83,4 +82,11 @@
     padding: 5px 13px;
     border-radius: 10px;
     cursor: pointer;
+}
+
+@media only screen and (max-width:766px) {
+    .limt_over_model{
+        height: 560px;
+        padding: 5px;
+    }
 }
