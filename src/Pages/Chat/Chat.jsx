@@ -30,7 +30,9 @@ export const Chat = () => {
 	const msgContainerRef = useRef(null);
 	const Enter_button_ref = useRef(null);
 	const { user, setUser } = useContext(UserContext);
-	const [sidenav, setSidenav] = useState(true);
+	const [sidenav, setSidenav] = useState(
+		window.innerWidth <= 768 ? false : true
+	);
 	const [isHidden, setIsHidden] = useState(false);
 	const [hidele, setHidele] = useState(false);
 	const [inputPrompt, setInputPrompt] = useState("");

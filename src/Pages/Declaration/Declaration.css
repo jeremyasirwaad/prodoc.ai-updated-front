@@ -1,3 +1,12 @@
+.declare-page{
+    width: 100vw;
+    min-height: 700px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    overflow-x: hidden;
+}
+
 .privacy_policy_container{
     width: 700px;
     align-content: center;
@@ -68,5 +77,19 @@
     border: none;
     background-color: rgb(23,113,210);
     color: white;
+}
+
+
+@media only screen and (max-width: 774px) {
+    .privacy_policy_container{
+        width: 80%;
+        font-size: 10px ;
+    }    
+
+    .privacy_policy_title{
+        font-weight: 600;
+        font-size: 22px;
+    }
+
 
 }

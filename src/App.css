@@ -200,12 +200,12 @@
 {
   .landing-page{
     flex-direction: column;
-    height: 135vh;
+  
   }
 
   .landing-sec1{
     width: 100%;
-    height: 100%
+    height: calc(96vh - 250px);
   }
 
 
@@ -230,32 +230,32 @@
     width: 100%;
     background-color: rgb(23,113,210);
     position: relative;
-    height: 100%;
+    height: 500px;
   }
 
   .sec2-contents{
-    /* display: none; */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;  
-    height: 500px;
     background-color: rgb(23,113,210);
-    /* display: none; */
+    min-height: 0px;
+    margin-bottom: 30px;
+    height: 400px;
   }
 
   .term-privacy{
-    /* display: none; */
     font-size: 13px;
+    width: 100%;
+    text-align: center;
+    bottom: 0px;
   }
 
   .land-title{
     font-size: 42px;
   }
 
-  .sec2-contents{
-    height: 500px;
-  }
+  
 
   .sec2-imagecontainer {
     border-radius: 40px;

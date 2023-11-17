@@ -474,8 +474,7 @@
     .chat-section{
         padding: 10px;
         padding-top: 20px;
-        height: 95vh;
-
+        height: 100svh;
     }
 
     .chat-input{
@@ -492,14 +491,21 @@
     }
 
     .chat-hero{
-        font-size: 35px;
-        margin-top: 30px;
+        font-size: 25px;
+        /* margin-top: 20px; */ 
+        margin-bottom: 10px;
+    }
+
+    .chat-hero-badge{
+        height: 30px;
     }
 
     .location-status{
         font-size: 14px;
         top: 0px;
+        display: none;
     }
+
 
     .selected-file-name{
         font-size: 14px;

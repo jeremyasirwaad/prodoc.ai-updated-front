@@ -33,7 +33,7 @@ export const Declaration = () => {
 	};
 
 	return (
-		<div className="login-page">
+		<div className="declare-page">
 			<div className="login-logo" style={{ marginTop: "20px" }}>
 				<img src={logo} alt="" />
 			</div>
