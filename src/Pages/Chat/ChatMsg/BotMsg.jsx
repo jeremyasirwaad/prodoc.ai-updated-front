@@ -131,7 +131,7 @@ export const BotMsg = ({ msg, doc, modelReply, hos }) => {
 											indi_doc.specialization
 										} | ${
 											indi_doc.experience_years != ""
-												? indi_doc.experience_years + Years
+												? indi_doc.experience_years + " Years"
 												: ""
 										}`}</span>
 										{!knowmore ? (
