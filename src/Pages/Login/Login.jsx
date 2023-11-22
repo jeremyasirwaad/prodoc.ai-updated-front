@@ -44,7 +44,9 @@ export const Login = () => {
 						.then((data) => {
 							user["free_limit"] = data.free_limit;
 							user["pass_last_brought"] = data.pass_last_brought;
-
+							user["last_queried"] = data.last_queried;
+							user["mob_otp"] =
+								data == null || data == undefined ? "" : data.mob_otp;
 							const token = jwt.sign(user, jwt_key, { expiresIn });
 							console.log(token);
 							localStorage.setItem("user-prodoc", token);

@@ -89,15 +89,20 @@ export const Otp = () => {
 					if (data.status) {
 						if (data.type == false) {
 							navigate("/declaration/login");
+							var info = user;
+							info["mob_otp"] = phoneNo;
+							setUser(info);
 						} else {
 							navigate("/chat");
+							var info = user;
+							info["mob_otp"] = phoneNo;
+							setUser(info);
 						}
 					} else {
 						toast.error("Invalid OTP");
 					}
 				});
 		} catch (error) {
-			// setResponse("Error creating user");
 			console.error(error);
 		}
 	};

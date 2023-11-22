@@ -141,6 +141,11 @@
     font-size: 16px;
 }
 
+.chat-disclaimer{
+    margin-left: 80px;
+    font-size: 14px;
+}
+
 @media only screen and (max-width:766px) {
     .user-msg{
         width: 95%;
@@ -176,5 +181,11 @@
 
     .bot-msg-docs{
         margin-left: 10px;
+    }
+
+    .chat-disclaimer{
+        margin-left: 30px;
+        font-size: 14px;
+        margin-top: 10px;
     }
 }

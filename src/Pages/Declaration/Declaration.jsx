@@ -41,10 +41,9 @@ export const Declaration = () => {
 				<span className="privacy_policy_title">Privacy Policy</span>
 				<p className="privay_bold">
 					THIS IS AN AGREEMENT BETWEEN YOU OR THE ENTITY THAT YOU REPRESENT (
-					HEREINAFTER “YOU” or “YOUR”) AND GROWTH HACKER CONSULTING PVT. LTD.
-					(HEREINAFTER “PRODOC” OR "Prodoc" OR "Prodoc.ai" ) GOVERNING YOUR USE
-					OF PRODOC SUITE OF ONLINE BUSINESS PRODUCTIVITY AND COLLABORATION
-					SOFTWARE.
+					HEREINAFTER “YOU” or “YOUR”) AND GH CONSULTING PVT. LTD. (HEREINAFTER
+					“PRODOC” OR "Prodoc" OR "Prodoc.ai" ) GOVERNING YOUR USE OF PRODOC
+					SUITE OF ONLINE BUSINESS PRODUCTIVITY AND COLLABORATION SOFTWARE.
 				</p>
 				<p>
 					Prodoc is committed to protecting the privacy of our users. This

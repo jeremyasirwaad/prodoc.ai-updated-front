@@ -33,7 +33,7 @@ export const Forms = () => {
 	const [summary, setSummary] = useState("");
 	const { isLoaded } = useJsApiLoader({
 		libraries: ["places"],
-		googleMapsApiKey: process.env.MAP_API_KEY
+		googleMapsApiKey: import.meta.env.VITE_MAP_API_KEY
 	});
 
 	if (!isLoaded) {
@@ -263,13 +263,15 @@ export const Forms = () => {
 												name={"location"}
 												rules={[{ required: true }]}
 											>
-												<Input
-													onChange={(e) => {
-														setName(e.target.value);
-													}}
-													style={{ width: "100%" }}
-													placeholder="Location"
-												></Input>
+												<Autocomplete>
+													<Input
+														onChange={(e) => {
+															setName(e.target.value);
+														}}
+														style={{ width: "100%" }}
+														placeholder="Location"
+													></Input>
+												</Autocomplete>
 											</Form.Item>
 										</Col>
 										<Col span={12}>
@@ -393,7 +395,7 @@ export const Forms = () => {
 														setName(e.target.value);
 													}}
 													style={{ width: "100%" }}
-													placeholder="Doctor Name"
+													placeholder="Hospital Name"
 												></Input>
 											</Form.Item>
 										</Col>
@@ -480,13 +482,15 @@ export const Forms = () => {
 												name={"location"}
 												rules={[{ required: true }]}
 											>
-												<Input
-													onChange={(e) => {
-														setName(e.target.value);
-													}}
-													style={{ width: "100%" }}
-													placeholder="Location"
-												></Input>
+												<Autocomplete>
+													<Input
+														onChange={(e) => {
+															setName(e.target.value);
+														}}
+														style={{ width: "100%" }}
+														placeholder="Location"
+													></Input>
+												</Autocomplete>
 											</Form.Item>
 										</Col>
 										<Col span={12}>

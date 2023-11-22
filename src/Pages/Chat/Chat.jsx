@@ -286,7 +286,8 @@ export const Chat = () => {
 	};
 
 	const sendPromt_OpenAI = async () => {
-		console.log(is_24hrs_pass(user["pass_last_brought"]));
+		if (!is_24hrs_pass(user["last_queried"])) {
+		}
 		if (!is_24hrs_pass(user["pass_last_brought"]) && user["free_limit"] >= 5) {
 			setShow_limit_over(true);
 			return;
@@ -385,7 +386,8 @@ export const Chat = () => {
 					uid: user.uid,
 					chat_id: contextId,
 					chats: chatArray,
-					is_24hrs: is_24hrs_pass(user["pass_last_brought"])
+					is_24hrs: is_24hrs_pass(user["pass_last_brought"]),
+					last_query: Date.now()
 				})
 			}).then(() => {
 				getHistory();

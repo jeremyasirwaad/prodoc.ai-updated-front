@@ -11,6 +11,14 @@ export const BotMsg = ({ msg, doc, modelReply, hos }) => {
 
 	const sendMail_Hospital = async (hospital, location, message, email) => {
 		try {
+			console.log({
+				hos: hospital,
+				email: email,
+				name: user.displayName,
+				contact: user.email + "-" + user.mob_otp,
+				details: message,
+				location: location
+			});
 			const response = await fetch(`${url}sendEmailToHospital`, {
 				method: "POST",
 				headers: {
@@ -20,7 +28,7 @@ export const BotMsg = ({ msg, doc, modelReply, hos }) => {
 					hos: hospital,
 					email: email,
 					name: user.displayName,
-					contact: user.email,
+					contact: user.email + "-" + user.mob_otp,
 					details: message,
 					location: location
 				})
@@ -34,7 +42,7 @@ export const BotMsg = ({ msg, doc, modelReply, hos }) => {
 
 	const sendMail_User = async () => {
 		try {
-			const response = await fetch(`${api}sendEmailToUser`, {
+			const response = await fetch(`${url}sendEmailToUser`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json"
@@ -119,7 +127,13 @@ export const BotMsg = ({ msg, doc, modelReply, hos }) => {
 								return (
 									<div className="docs-sug">
 										<span className="doc-name">{indi_doc.doctor_name}</span>
-										<span className="doc-specs">{`${indi_doc.specialization} | ${indi_doc.experience_years} Years`}</span>
+										<span className="doc-specs">{`${
+											indi_doc.specialization
+										} | ${
+											indi_doc.experience_years != ""
+												? indi_doc.experience_years + Years
+												: ""
+										}`}</span>
 										{!knowmore ? (
 											<span className="doc-summary">
 												{indi_doc?.summary?.slice(0, 150) + "..."}{" "}
@@ -268,6 +282,12 @@ export const BotMsg = ({ msg, doc, modelReply, hos }) => {
 				</div>
 			) : (
 				<div></div>
+			)}
+			{(doc.length > 0 || hos.length > 0) && (
+				<span className="chat-disclaimer">
+					The current list is limited to doctors/hospitals who have signed up
+					with us
+				</span>
 			)}
 		</div>
 	);
