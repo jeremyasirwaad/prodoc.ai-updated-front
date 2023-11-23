@@ -121,7 +121,15 @@ function App() {
 					</div>
 				</div>
 				<div className="term-privacy">
-					Terms of use |{" "}
+					<span
+						style={{ cursor: "pointer" }}
+						onClick={() => {
+							navigate("/termsofuse");
+						}}
+					>
+						Terms of use
+					</span>{" "}
+					|{" "}
 					<span
 						style={{ cursor: "pointer" }}
 						onClick={() => {
