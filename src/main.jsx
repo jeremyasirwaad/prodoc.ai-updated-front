@@ -18,6 +18,7 @@ import { Declaration } from "./Pages/Declaration/Declaration.jsx";
 import { Otp } from "./Pages/Otp/Otp.jsx";
 import { Faq } from "./Pages/Faq/Faq.jsx";
 import { Forms } from "./Pages/Forms/Forms.jsx";
+import { Term_of_use } from "./Pages/Terms/Terms_of_use.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
 	<React.StrictMode>
@@ -61,6 +62,14 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 						element={
 							<>
 								<Faq />
+							</>
+						}
+					/>
+					<Route
+						path="/termsofuse"
+						element={
+							<>
+								<Term_of_use />
 							</>
 						}
 					/>

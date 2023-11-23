@@ -29,10 +29,10 @@ function App() {
 				<Navbar></Navbar>
 				<div className="sec1-contents">
 					<div className="sec1-inner-div"></div>
-					<span className="land-title">Prodoc.ai</span>
+					<h1 className="land-title">AI-Driven Care Discovery </h1>
 					<span className="land-subtitle">
-						A conversational Chat-Bot by{" "}
-						<a
+						Changing the way the world discovers care
+						{/* <a
 							style={{
 								color: "rgb(29,112,95)",
 								fontWeight: "700",
@@ -41,12 +41,11 @@ function App() {
 							href="https://prodoc.io"
 						>
 							Prodoc
-						</a>
+						</a> */}
 					</span>
 					<span className="land-subpara">
-						We're here to simplify your healthcare journey, answer your
-						questions, and connect you with the right experts. Your health, our
-						priority.
+						Navigate Your Health Journey with Ease – Ask Questions, Find
+						Specialists, and Book Care Tailored Just for You.
 					</span>
 					<span
 						className="land-subbutton"
@@ -61,14 +60,17 @@ function App() {
 			<div className="landing-sec2">
 				<div className="navbar-right">
 					<div className="navbar-right-inner">
-						<span
-							onClick={() => {
-								navigate("/forms");
-							}}
+						<a
+							href="https://forms.gle/T5WaRgS6zDQ8QYdD8"
+							// onClick={() => {
+							// 	navigate("/forms");
+							// }}
 							className="navbar-right-faq"
+							style={{ textDecoration: "none" }}
+							target="_blank"
 						>
 							Get Listed
-						</span>
+						</a>
 						<span
 							onClick={() => {
 								navigate("/faq");
