@@ -626,6 +626,24 @@ export const Chat = () => {
 							<div
 								className="chat-suggestion"
 								onClick={() => {
+									setInputPrompt("Find a hospital that has neonatal ICU");
+								}}
+							>
+								<span className="chat-suggestion-title">Search</span>
+								<span>Find a hospital that has neonatal ICU</span>
+							</div>
+							<div
+								className="chat-suggestion"
+								onClick={() => {
+									setInputPrompt("Suggest a good physiotherapist near me");
+								}}
+							>
+								<span className="chat-suggestion-title">Suggestion</span>
+								<span>Suggest a good physiotherapist near me</span>
+							</div>
+							<div
+								className="chat-suggestion"
+								onClick={() => {
 									setInputPrompt(
 										"Here are my medical reports, Whom should I consult with ?"
 									);
@@ -648,24 +666,6 @@ export const Chat = () => {
 								<span>
 									Looking for an second opinion, find me an alternative
 								</span>
-							</div>
-							<div
-								className="chat-suggestion"
-								onClick={() => {
-									setInputPrompt("Find a hospital that has neonatal ICU");
-								}}
-							>
-								<span className="chat-suggestion-title">Search</span>
-								<span>Find a hospital that has neonatal ICU</span>
-							</div>
-							<div
-								className="chat-suggestion"
-								onClick={() => {
-									setInputPrompt("Suggest a good physiotherapist near me");
-								}}
-							>
-								<span className="chat-suggestion-title">Suggestion</span>
-								<span>Suggest a good physiotherapist near me</span>
 							</div>
 						</div>
 					)}
@@ -749,6 +749,7 @@ export const Chat = () => {
 										doc={msg.doc}
 										hos={msg.hos}
 										modelReply={modelReply}
+										updateScroll={updateScroll}
 									/>
 								);
 							}

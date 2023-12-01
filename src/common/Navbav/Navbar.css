@@ -28,7 +28,7 @@
 
 .beta-tag{
     font-weight: 300;
-    font-size: 12px;
+    font-size: 8px;
     margin-left: 5px;
     border-radius: 5px;
     border: 1px solid rgb(23,113,210);
@@ -100,6 +100,6 @@
     }
 
     .beta-tag{
-        font-size: 9px;
+        font-size: 7px;
     }
 }

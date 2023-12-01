@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import logo from "../../../assets/prodoc.png";
 import { url } from "../../../../networl.config";
 import UserContext from "../../../UserProvider";
@@ -6,8 +6,9 @@ import toast from "react-hot-toast";
 import tick from "../../../assets/check-green.gif";
 import { MsgCard } from "./MsgCard";
 
-export const BotMsg = ({ msg, doc, modelReply, hos }) => {
+export const BotMsg = ({ msg, doc, modelReply, hos, updateScroll }) => {
 	const { user } = useContext(UserContext);
+	const [show_hos_doc, setShow_hos_doc] = useState(false);
 	// const [knowmore, setKnowmore] = useState(false);
 
 	const sendMail_Hospital = async (hospital, location, message, email) => {
@@ -110,106 +111,59 @@ export const BotMsg = ({ msg, doc, modelReply, hos }) => {
 		return formattedText;
 	}
 
+	useEffect(() => {
+		updateScroll();
+	}, [show_hos_doc]);
+
 	return (
 		<div className="bot-msg-loading-doc">
 			<div className="bot-msg-loading">
 				<img src={logo} alt="" />
-
 				<span>{msg}</span>
 			</div>
-			{doc.length > 0 ? (
+			{(doc.length > 0 || hos.length > 0) && (
+				<div className="doc-hos-btn">
+					{!show_hos_doc && (
+						<button
+							className="show-doc-hos-btn"
+							style={{ marginRight: "10px" }}
+							onClick={() => {
+								setShow_hos_doc(true);
+							}}
+						>
+							List Nearby Doctors and Hospitals ?
+						</button>
+					)}
+				</div>
+			)}
+
+			{doc.length > 0 && show_hos_doc ? (
 				<div className="bot-msg-docs">
 					<span className="bot-msg-reponse-type">Doctors</span>
 					{doc.map((doc_sug) => {
 						if (Array.isArray(doc_sug))
 							return doc_sug.map((indi_doc) => {
-								return <MsgCard indi_doc={indi_doc} />;
+								return <MsgCard indi_doc={indi_doc} type={"Doctor"} />;
 							});
 					})}
 				</div>
 			) : (
 				<div></div>
 			)}
-			{hos.length > 0 ? (
+			{hos.length > 0 && show_hos_doc ? (
 				<div className="bot-msg-docs">
 					<span className="bot-msg-reponse-type">Hospitals</span>
-					{hos.map((hos_sug) => {
-						return hos_sug.map((indi_hos) => {
-							const [knowmore, setKnowmore] = useState(false);
-							return (
-								<div className="docs-sug">
-									<span className="doc-name">{indi_hos.name}</span>
-									<span className="doc-specs">{`${indi_hos.city} | ${indi_hos?.vn_phone_number?.number}`}</span>
-									{!knowmore ? (
-										<span className="doc-summary">
-											{indi_hos?.description?.slice(0, 150) + "..."}{" "}
-											{indi_hos.description ? (
-												<span
-													style={{ fontWeight: "600", cursor: "pointer" }}
-													onClick={() => {
-														setKnowmore(true);
-													}}
-												>
-													Know More
-												</span>
-											) : (
-												""
-											)}
-										</span>
-									) : (
-										<span className="doc-summary">
-											{indi_hos?.description}
-											<span
-												style={{ fontWeight: "600", cursor: "pointer" }}
-												onClick={() => {
-													setKnowmore(false);
-												}}
-											>
-												Know Less
-											</span>
-										</span>
-									)}
-
-									<div className="filler"></div>
-									<div className="doc-opt-btn">
-										<button className="doc-loc-btn">Location</button>
-										<button
-											className="doc-book-btn"
-											onClick={() => {
-												sendMail_User();
-												sendMail_Hospital(
-													indi_hos.name,
-													indi_hos.city,
-													modelReply,
-													"inbound@prodoc.io"
-												);
-												setTimeout(() => {
-													toast.custom(() => (
-														<div className="mail-sent-popup">
-															<div className="mail-inner-popup">
-																<img src={tick} alt="" />
-																<span>
-																	Your Interest has been noted. We will get back
-																	to you shortly. Thanks.
-																</span>
-															</div>
-														</div>
-													));
-												}, 1000);
-											}}
-										>
-											Book an Appointment
-										</button>
-									</div>
-								</div>
-							);
-						});
+					{hos.map((doc_sug) => {
+						if (Array.isArray(doc_sug))
+							return doc_sug.map((indi_doc) => {
+								return <MsgCard indi_doc={indi_doc} type={"Hospitals"} />;
+							});
 					})}
 				</div>
 			) : (
 				<div></div>
 			)}
-			{(doc.length > 0 || hos.length > 0) && (
+			{(doc.length > 0 || hos.length > 0) && show_hos_doc && (
 				<span className="chat-disclaimer">
 					The current list is limited to doctors/hospitals who have signed up
 					with us

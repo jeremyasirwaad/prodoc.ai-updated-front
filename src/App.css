@@ -205,7 +205,7 @@
 
   .landing-sec1{
     width: 100%;
-    height: calc(96vh - 250px);
+    /* height: calc(96vh - 250px); */
   }
 
 
@@ -214,12 +214,21 @@
     flex-direction: column;
     justify-content: center;
     padding: 35px;
-    height: calc(88vh - 250px);
+    height: 550px;
     min-height: 300px;
   }
 
   .land-subbutton{
     margin-bottom: 40px;
+  }
+
+  .land-subpara{
+    margin-bottom:40px;
+  }
+
+  .land-subtitle{
+    margin-bottom: 30px;
+
   }
   
   .navbar-right{

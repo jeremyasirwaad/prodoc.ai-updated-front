@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import { Navbar } from "./common/Navbav/Navbar";
 import "./App.css";
-import physiotherapy from "./assets/physiotherapy.jpg";
-import reportimg from "./assets/reports.webp";
-import secondopinion from "./assets/secondopinion.jpg";
-import neonatal from "./assets/neonatel.jpeg";
+import physiotherapy from "./assets/doc_img_land2.jpeg";
+import reportimg from "./assets/report_img_land2.jpeg";
+import secondopinion from "./assets/doc_consult_land.jpeg";
+import neonatal from "./assets/neo_img_land.jpeg";
 import Typewriter from "./common/Typewriter/Typewriter";
 import { useNavigate } from "react-router-dom";
 
@@ -29,9 +29,12 @@ function App() {
 				<Navbar></Navbar>
 				<div className="sec1-contents">
 					<div className="sec1-inner-div"></div>
-					<h1 className="land-title">AI-Driven Care Discovery </h1>
+					<h1 className="land-title">
+						Find the right specialist for your surgery{" "}
+					</h1>
 					<span className="land-subtitle">
-						Changing the way the world discovers care
+						Upload your medical diagnosis, locate the ideal specialist, and
+						schedule an appointment with just one click.
 						{/* <a
 							style={{
 								color: "rgb(29,112,95)",
@@ -44,8 +47,7 @@ function App() {
 						</a> */}
 					</span>
 					<span className="land-subpara">
-						Navigate Your Health Journey with Ease – Ask Questions, Find
-						Specialists, and Book Care Tailored Just for You.
+						Transforming the Approach to Healthcare Discovery
 					</span>
 					<span
 						className="land-subbutton"
