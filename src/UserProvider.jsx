@@ -20,6 +20,7 @@ export function UserProvider({ children }) {
 			})
 				.then((res) => res.json())
 				.then((data) => {
+					console.log(data);
 					setUser(data.data[0]);
 				});
 		} catch (error) {

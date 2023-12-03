@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const Typewriter = ({ texts = [], delay, stringChangeDelay, infinite }) => {
+const Typewriter = ({ texts = [], delay, stringChangeDelay, infinite, onTextChange }) => {
 	const [currentText, setCurrentText] = useState("");
 	const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -18,6 +18,11 @@ const Typewriter = ({ texts = [], delay, stringChangeDelay, infinite }) => {
 					if (newText === currentString) {
 						clearTimeout(timeout);
 
+						// Call the callback function when the text changes
+						if (onTextChange) {
+							onTextChange(currentIndex, stringChangeDelay);
+						}
+
 						if (currentIndex === texts.length - 1 && !infinite) {
 							return;
 						}
@@ -34,7 +39,7 @@ const Typewriter = ({ texts = [], delay, stringChangeDelay, infinite }) => {
 		}
 
 		return () => clearTimeout(timeout);
-	}, [currentText, currentIndex, delay, infinite, texts, stringChangeDelay]);
+	}, [currentText, currentIndex, delay, infinite, texts, stringChangeDelay, onTextChange]);
 
 	return <span>{currentText}</span>;
 };

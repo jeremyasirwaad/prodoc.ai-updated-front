@@ -15,13 +15,13 @@ function App() {
 	const imageUrls = [reportimg, physiotherapy, neonatal, secondopinion];
 	const timeIntervals = [6900, 5300, 5700, 6000];
 
-	useEffect(() => {
-		const intervalId = setInterval(() => {
-			setCurrentImageIndex((prevIndex) => (prevIndex + 1) % imageUrls.length);
-		}, timeIntervals[currentImageIndex]);
+	// useEffect(() => {
+	// 	const intervalId = setInterval(() => {
+	// 		setCurrentImageIndex((prevIndex) => (prevIndex + 1) % imageUrls.length);
+	// 	}, timeIntervals[currentImageIndex]);
 
-		return () => clearInterval(intervalId);
-	}, [currentImageIndex, imageUrls]);
+	// 	return () => clearInterval(intervalId);
+	// }, [currentImageIndex, imageUrls]);
 
 	return (
 		<div className="landing-page">
@@ -117,6 +117,17 @@ function App() {
 									]}
 									delay={80}
 									infinite
+									onTextChange={(index, delay) => {
+										// Your callback logic here
+										// console.log(
+										// 	`Text changed to index ${index} with a delay of ${delay} milliseconds`
+										// );
+										setTimeout(() => {
+											setCurrentImageIndex(
+												(prevIndex) => (prevIndex + 1) % imageUrls.length
+											);
+										}, 2000);
+									}}
 								/>
 							</span>
 						</div>

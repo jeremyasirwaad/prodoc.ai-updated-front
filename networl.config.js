@@ -1,4 +1,8 @@
 //production
+// export const url = "https://prodoc.ai/api/";
+// export const openAI_url = "https://prodoc.ai/model/query";
+
+//development
 export const url = "https://prodoc.health/api/";
 export const openAI_url = "https://prodoc.health/model/query";
 
