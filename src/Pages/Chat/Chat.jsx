@@ -95,27 +95,36 @@ export const Chat = () => {
 						}
 					);
 				} else if (status.state === "prompt") {
-					// Location permission is not granted but can be requested
-					const position = await navigator.geolocation.getCurrentPosition();
-					const latitude = position.coords.latitude;
-					const longitude = position.coords.longitude;
-					setLocation({ latitude, longitude });
+					navigator.geolocation.getCurrentPosition(
+						async (position) => {
+							const latitude = position.coords.latitude;
+							const longitude = position.coords.longitude;
+							setLocation({ latitude, longitude });
 
-					// Use reverse geocoding to get the city name
-					try {
-						const response = await fetch(
-							`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
-						);
-						const data = await response.json();
-						if (data) {
-							const city = data.address.county;
-							setCity(city);
-							console.log(city);
-							setLocationStatue(true);
+							// Use reverse geocoding to get the city name
+							try {
+								const response = await fetch(
+									`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
+								);
+								const data = await response.json();
+								if (data) {
+									const city = data.address.county;
+									setCity(city);
+									setLocationStatue(true);
+								}
+							} catch (error) {
+								console.error("Error fetching city name:", error);
+							}
+						},
+						(error) => {
+							if (error.code == 1) {
+								console.error("Location permission is denied");
+								setCity("Location Disabled");
+								setLocationStatue(false);
+							}
+							console.error(error);
 						}
-					} catch (error) {
-						console.error("Error fetching city name:", error);
-					}
+					);
 				} else {
 					// Location permission is denied
 					console.error("Location permission is denied");

@@ -75,12 +75,17 @@
 
 }
 
+.nav_mob_logins{
+    display: none;
+}
+
 @media only screen and (max-width:980px){
     .navbar{
         width: 100vw;
         height: 80px;
         display: flex;
         align-items: center;
+        justify-content: space-between;
     }
     .nav-title{
         font-size: 19px;
@@ -101,5 +106,17 @@
 
     .beta-tag{
         font-size: 7px;
+    }
+
+    .nav_mob_logins{
+        display: block;
+        color: rgb(23,113,210);
+        margin-right: 30px;
+        font-size: 14px;
+    }
+
+    .nav_mob_logins > a{
+        color: rgb(23,113,210);
+
     }
 }
