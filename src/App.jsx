@@ -96,9 +96,10 @@ function App() {
 						{imageUrls.map((imageUrl, index) => {
 							return (
 								<img
+									title={imageUrl}
 									key={index}
 									src={imageUrl}
-									alt=""
+									alt={imageUrl}
 									className={`image ${
 										index === currentImageIndex ? `active${index}` : ""
 									}`}
