@@ -33,7 +33,7 @@ function App() {
 						Find the right specialist for your surgery{" "}
 					</h1>
 					<span className="land-subtitle">
-						Upload your medical diagnosis, locate the ideal specialist, and
+						Upload your medical reports, locate the ideal specialist, and
 						schedule an appointment with just one click.
 						{/* <a
 							style={{
@@ -46,9 +46,9 @@ function App() {
 							Prodoc
 						</a> */}
 					</span>
-					<span className="land-subpara">
+					<h2 className="land-subpara">
 						Transforming the Approach to Healthcare Discovery
-					</span>
+					</h2>
 					<span
 						className="land-subbutton"
 						onClick={() => {

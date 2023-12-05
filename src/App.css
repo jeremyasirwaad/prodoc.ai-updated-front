@@ -46,6 +46,8 @@
 
 .land-subpara{
   margin-bottom:50px;
+  font-size: 16px;
+  font-weight: 400;
 }
 
 .land-subbutton{
@@ -224,6 +226,8 @@
 
   .land-subpara{
     margin-bottom:40px;
+    font-size: 16px;
+    font-weight: 400;
   }
 
   .land-subtitle{
