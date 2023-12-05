@@ -101,10 +101,10 @@ export const Login = () => {
 						"Continue with Google"
 					)}
 				</button>
-				<button>
+				<button disabled>
 					<img src={facebook_logo} alt="" /> Continue with Facebook
 				</button>
-				<button>
+				<button disabled>
 					<img src={apple_logo} alt="" /> Continue with Apple
 				</button>
 			</div>

@@ -175,7 +175,8 @@ export const Chat = () => {
 		const { amount, id: order_id, currency } = result.data;
 
 		const options = {
-			key: "rzp_test_0a6Ol91FCqsw02", // Enter the Key ID generated from the Dashboard
+			key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+			// key: "rzp_test_0a6Ol91FCqsw02", // Enter the Key ID generated from the Dashboard
 			amount: amount.toString(),
 			currency: currency,
 			name: "Prodoc.ai",
